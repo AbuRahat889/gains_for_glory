@@ -6,11 +6,11 @@ import {
 } from "@/redux/api/booking";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import Pagination from "../../DatePicker/Pagination";
+import Pagination from "../ui/Pagination";
 import deleteImage from "@/assets/icon/delete.svg";
 import Image from "next/image";
 
-const FinanceCommunityTable = () => {
+const BibleCommunityTable = () => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -173,4 +173,4 @@ const FinanceCommunityTable = () => {
   );
 };
 
-export default FinanceCommunityTable;
+export default BibleCommunityTable;

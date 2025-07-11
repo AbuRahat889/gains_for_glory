@@ -1,16 +1,9 @@
 "use client";
-import {
-  useDeleteBookingMutation,
-  useGetAllBookingQuery,
-  useUpdateBookingStatusMutation,
-} from "@/redux/api/booking";
+import { useGetAllBookingQuery } from "@/redux/api/booking";
 import React, { useState } from "react";
-import Swal from "sweetalert2";
-import Pagination from "../../DatePicker/Pagination";
-import deleteImage from "@/assets/icon/delete.svg";
-import Image from "next/image";
+import Pagination from "../ui/Pagination";
 
-const BibleCommunityTable = () => {
+const FreeTrialTable = () => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -21,55 +14,6 @@ const BibleCommunityTable = () => {
 
   const totalPages = data?.data?.meta?.totalPage || 1;
   const currentItems = data?.data?.data || [];
-
-  //handle delete
-  const [deleteFN] = useDeleteBookingMutation();
-  const handleDelete = async (id: string) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const res = await deleteFN(id);
-        if (res?.data?.success) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
-        }
-      }
-    });
-  };
-
-  const [updateFN] = useUpdateBookingStatusMutation();
-  const handleUpdate = async (id: string) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to update this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, update it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const res = await updateFN({ id, status: "COMPLETED" });
-        if (res?.data?.data?.success) {
-          Swal.fire({
-            title: "Updated!",
-            text: "Your file status has been update.",
-            icon: "success",
-          });
-        }
-      }
-    });
-  };
 
   return (
     <div className=" bg-white">
@@ -82,8 +26,7 @@ const BibleCommunityTable = () => {
               <th className="py-2 px-4">Email</th>
               <th className="py-2 px-4">Location</th>
               <th className="py-2 px-4 ">Subscription</th>
-              <th className="py-2 px-4">Status</th>
-              <th className="py-2 px-4 text-center">Action</th>
+              <th className="py-2 px-4 ">Point</th>
             </tr>
           </thead>
           <tbody>
@@ -130,32 +73,40 @@ const BibleCommunityTable = () => {
                   </td>
                   <td className="py-2 px-4">{info?.user?.phoneNumber}</td>
 
-                  <td className="py-2 px-4 text-center">{info?.totalAmount}</td>
+                  <td className="py-2 px-4">{info?.totalAmount}</td>
+                  <td className="py-2 px-4 ">10</td>
 
-                  <td className="py-2 px-4">
-                    <h1
-                      onClick={() => handleUpdate(info?.id)}
-                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer  ${
-                        info?.status === "COMPLETED"
-                          ? "bg-[#7b61ff]"
-                          : info?.status === "PENDING"
-                          ? "bg-yellow-500"
-                          : info?.status === "CANCELLED"
-                          ? "bg-red-500"
-                          : "bg-gray-300"
-                      }`}
-                    >
-                      {info?.status}
-                    </h1>
-                  </td>
-                  <td className="py-2 px-4 flex justify-center">
-                    <Image
-                      onClick={() => handleDelete(info?.id)}
-                      src={deleteImage}
-                      alt="delete icon"
-                      className="h-6 w-6 text-[#EF4444] hover:text-red-600 cursor-pointer"
-                    />
-                  </td>
+                  {/* <td className="py-2 px-4">
+                    <div className="relative inline-block text-left">
+                      <button
+                        onClick={() => toggleDropdown(info.id)}
+                        className={`flex items-center gap-1 px-4 py-1.5 rounded-full ${
+                          (statusMap[info.id] || info.status) === "Active"
+                            ? "bg-green-50 text-green-600"
+                            : "bg-red-50 text-red-600"
+                        } font-medium text-sm focus:outline-none`}
+                      >
+                        {statusMap[info.id] || info.status || "Active"}
+                        <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                      </button>
+
+                      {dropdownStates[info.id] && (
+                        <div className="absolute mt-2 w-28 rounded-md bg-white shadow-lg z-50">
+                          <div className="py-1">
+                            {options.map((option) => (
+                              <button
+                                key={option}
+                                onClick={() => handleSelect(info.id, option)}
+                                className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                              >
+                                {option}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </td> */}
                 </tr>
               ))
             )}
@@ -173,4 +124,4 @@ const BibleCommunityTable = () => {
   );
 };
 
-export default BibleCommunityTable;
+export default FreeTrialTable;

@@ -28,7 +28,7 @@ const navigation = [
     route: "/user-request",
     iconPath: <BsJournalText />,
   },
-  { label: "User List", route: "/calendar", iconPath: <SlCalender /> },
+  { label: "User List", route: "/user-list", iconPath: <SlCalender /> },
   { label: "Videos", route: "/customer-info", iconPath: <Group /> },
   { label: "My Product", route: "/customer-info", iconPath: <Group /> },
   { label: "My Orders", route: "/customer-info", iconPath: <Group /> },

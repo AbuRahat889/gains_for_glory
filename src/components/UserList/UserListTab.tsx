@@ -2,9 +2,8 @@
 import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
-import BibleCommunityTable from "./BibleCommunityTable";
-import WorkoutcommunityTable from "./WorkoutcommunityTable";
-import FinanceCommunityTable from "./FinanceCommunityTable";
+import AllUserTable from "./AllUser";
+import FreeTrialTable from "./FreeTrial";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -23,10 +22,10 @@ const items: TabsProps["items"] = [
           lineHeight: "normal",
         }}
       >
-        Bible Study Community
+        All Use List
       </span>
     ),
-    children: <BibleCommunityTable />,
+    children: <AllUserTable />,
   },
   {
     key: "2",
@@ -40,10 +39,10 @@ const items: TabsProps["items"] = [
           lineHeight: "normal",
         }}
       >
-        workout tips community
+        Free Trial
       </span>
     ),
-    children: <WorkoutcommunityTable />,
+    children: <FreeTrialTable />,
   },
   {
     key: "3",
@@ -57,14 +56,31 @@ const items: TabsProps["items"] = [
           lineHeight: "normal",
         }}
       >
-        finance community
+        Basic Plan
       </span>
     ),
-    children: <FinanceCommunityTable />,
+    children: <AllUserTable />,
+  },
+  {
+    key: "4",
+    label: (
+      <span
+        style={{
+          color: "#7b61ff",
+          fontSize: "14px",
+          fontStyle: "normal",
+          fontWeight: 500,
+          lineHeight: "normal",
+        }}
+      >
+        Premium Plan
+      </span>
+    ),
+    children: <AllUserTable />,
   },
 ];
 
-const UserInfoTab: React.FC = () => (
+const AllUserList: React.FC = () => (
   <Tabs
     className="custom-tabs"
     defaultActiveKey="1"
@@ -76,4 +92,4 @@ const UserInfoTab: React.FC = () => (
   />
 );
 
-export default UserInfoTab;
+export default AllUserList;
