@@ -1,0 +1,52 @@
+{
+  "name": "johnwright",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack -p 5667",
+    "build": "next build",
+    "start": "next start -p 5667",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@next/font": "^14.2.15",
+    "@radix-ui/react-select": "^2.2.5",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@reduxjs/toolkit": "^2.6.1",
+    "@stripe/react-stripe-js": "^3.1.1",
+    "antd": "^5.23.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.503.0",
+    "next": "15.1.6",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-hook-form": "^7.56.1",
+    "react-icons": "^5.4.0",
+    "react-redux": "^9.2.0",
+    "react-slick": "^0.30.3",
+    "react-toastify": "^11.0.3",
+    "recharts": "^2.15.3",
+    "redux-persist": "^6.0.0",
+    "sweetalert2": "^11.17.2",
+    "swiper": "^11.2.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-redux": "^7.1.34",
+    "@types/recharts": "^1.8.29",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.6",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

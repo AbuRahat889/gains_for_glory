@@ -1,0 +1,175 @@
+"use client";
+
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import StatCards from "./StatCards";
+import Chart from "./Charts";
+import AllBookingTable from "./AllBookingTable";
+import { useGetTodayBookingQuery } from "@/redux/api/booking";
+import { useGetAllDashboardInfoQuery } from "@/redux/api/dashboard";
+
+function getTodayDate() {
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const today = new Date();
+  const dayOfMonth = today.getDate();
+  const month = months[today.getMonth()];
+  const dayOfWeek = days[today.getDay()];
+
+  return `${dayOfMonth} ${month}, ${dayOfWeek}`;
+}
+
+function Dashboard() {
+  const { data, isLoading } = useGetTodayBookingQuery({});
+
+  const today = new Date();
+  const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(today.getFullYear());
+  const [availableYears, setAvailableYears] = useState<number[]>([]);
+
+  // Generate available years (current year - 5 to current year + 5)
+  useEffect(() => {
+    const currentYear = 2025;
+    const years = [];
+    for (let i = currentYear; i <= currentYear + 20; i++) {
+      years.push(i);
+    }
+    setAvailableYears(years);
+  }, []);
+
+  const { data: dashboardInfo, isLoading: chartLoading } =
+    useGetAllDashboardInfoQuery({
+      month: selectedMonth,
+      year: selectedYear,
+    });
+
+  return (
+    <div className="min-h-screen bg-[#FAFAFA]">
+      <div className="p-4 md:p-8">
+        {/* Header */}
+        <header className="flex justify-between items-center relative">
+          <h1 className="text-xl md:text-2xl font-bold">
+            Today {getTodayDate()}
+          </h1>
+        </header>
+
+        {/* Stats Cards */}
+        <StatCards
+          totalBooking={dashboardInfo?.data?.overview?.totalBookings}
+          totalRevenue={dashboardInfo?.data?.overview?.avgRevenuePerBooking?.toFixed(
+            2
+          )}
+          totalUser={dashboardInfo?.data?.overview?.totalUsers}
+        />
+
+        {/* Month/Year Selector */}
+        <div className="mt-6 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <h2 className="text-lg font-semibold text-gray-800">
+              Service Analytics
+            </h2>
+            <div className="flex gap-3">
+              <div className="relative">
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                  className="appearance-none bg-white pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                >
+                  {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
+                    <option key={month} value={month}>
+                      {new Date(2000, month - 1, 1).toLocaleString("default", {
+                        month: "long",
+                      })}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+              {/* selected year  */}
+              <div className="relative">
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(Number(e.target.value))}
+                  className="appearance-none bg-white pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                >
+                  {availableYears.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Chart */}
+          <div className="mt-4">
+            <Chart
+              chatInfo={dashboardInfo?.data?.dailyServiceCounts}
+              isLoading={chartLoading}
+            />
+          </div>
+        </div>
+
+        {/* New Booking Section */}
+        <div className="md:flex justify-between items-center p-6 mt-6 bg-white rounded-lg shadow-sm border border-gray-100">
+          <h2 className="text-2xl leading-normal font-bold">Today Bookings</h2>
+          <Link
+            href={"/all-booking"}
+            className="underline text-base font-normal leading-normal text-primary hover:text-primary-dark transition-colors"
+          >
+            See all
+          </Link>
+        </div>
+        <div className="py-10">
+          {data?.data?.length === 0 ? (
+            <div className="text-center mt-5">No Bookings today</div>
+          ) : (
+            <AllBookingTable bookingInfo={data?.data} isLoading={isLoading} />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;
