@@ -7,7 +7,7 @@ import profileImage from "@/assets/team1.jpg";
 export default function Navbar() {
   return (
     <nav
-      className={` mx-auto border-b border-[#b9b9b9] h-24 flex px-28`}
+      className={` mx-auto border-b border-[#b9b9b9] h-24 flex px-28 fixed bg-white z-[9] w-full`}
     >
       <div className="flex justify-between w-full">
         <div className="relative  flex-1">

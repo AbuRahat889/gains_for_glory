@@ -50,7 +50,7 @@ const NavbarSlider = ({ isOpen, toggleSidebar }: SidebarProps) => {
       {/* Sidebar Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="m-4 p-2 text-black rounded-md bg-white shadow-md"
+        className="m-4 p-2 text-black rounded-md bg-red-500 shadow-md z-[9999]"
       >
         {isOpen ? <IoClose size={20} /> : <FiMenu size={20} />}
       </button>

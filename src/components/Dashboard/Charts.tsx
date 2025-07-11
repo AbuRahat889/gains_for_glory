@@ -1,15 +1,16 @@
 "use client";
 
+import { HiOutlineArrowNarrowUp } from "react-icons/hi";
 import {
-  XAxis,
-  YAxis,
   CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
   Line,
   LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
-import { useMemo } from "react";
+import { ChartContainer, ChartTooltipContent } from "../ui/chart";
+import { ResponsiveContainer } from "recharts";
 
 interface ChartProps {
   chatInfo?: {
@@ -23,147 +24,135 @@ interface ChartProps {
   isLoading?: boolean;
 }
 
-const Chart: React.FC<ChartProps> = ({ chatInfo, isLoading }) => {
-  const chartData = useMemo(() => {
-    if (!chatInfo) return [];
+const Chart: React.FC<ChartProps> = ({ chatInfo }) => {
+  console.log(chatInfo);
+  const chartData = [
+    { day: 1, value: 2000 },
+    { day: 2, value: 2200 },
+    { day: 3, value: 2800 },
+    { day: 4, value: 3200 },
+    { day: 5, value: 4200 },
+    { day: 6, value: 5800 },
+    { day: 7, value: 6200 },
+    { day: 8, value: 5400 },
+    { day: 9, value: 4800 },
+    { day: 10, value: 4200 },
+    { day: 11, value: 4400 },
+    { day: 12, value: 4600 },
+    { day: 13, value: 500 },
+    { day: 14, value: 5800 },
+    { day: 15, value: 6400 },
+    { day: 16, value: 6800 },
+    { day: 17, value: 7200 },
+    { day: 18, value: 7800 },
+    { day: 19, value: 3000 },
+    { day: 20, value: 8800 },
+    { day: 21, value: 9200 },
+    { day: 22, value: 9600 },
+    { day: 23, value: 9400 },
+    { day: 24, value: 8800 },
+    { day: 25, value: 8600 },
+    { day: 26, value: 8200 },
+    { day: 27, value: 7800 },
+    { day: 28, value: 7600 },
+    { day: 29, value: 8200 },
+    { day: 30, value: 8800 },
+    { day: 31, value: 10000 },
+  ];
 
-    return chatInfo.map((day) => {
-      const bookings = day.bookings || [];
+  const chartConfig = {
+    value: {
+      label: "Value",
+      color: "#7b61ff",
+    },
+  };
 
-      // Initialize counters
-      let completed = 0;
-      let pending = 0;
-      let cancelled = 0;
-
-      // Count statuses from the actual bookings array
-      bookings.forEach((booking) => {
-        switch (booking.status) {
-          case "COMPLETED":
-            completed++;
-            break;
-          case "PENDING":
-            pending++;
-            break;
-          case "CANCELLED":
-            cancelled++;
-            break;
-        }
-      });
-
-      return {
-        date: new Date(day.date).getDate(),
-        fullDate: day.date,
-        count: day.count,
-        COMPLETED: completed,
-        PENDING: pending,
-        CANCELLED: cancelled,
-      };
-    });
-  }, [chatInfo]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!chatInfo || !chatInfo?.length) {
-    return (
-      <div className="w-full h-72 bg-white rounded-xl flex items-center justify-center">
-        <p className="text-gray-500">No booking data available</p>
-      </div>
-    );
-  }
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <ChartTooltipContent
+          active={active}
+          payload={payload}
+          label={label}
+          labelFormatter={(value) => `Day ${value}`}
+          formatter={(value) => [value.toLocaleString(), "Value"]}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-6 ">
       {/* Bookings Count Chart */}
-      <div className="h-72 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Daily Bookings
+      <div className=" bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <h3 className="text-base font-normal text-textColor mb-4">
+          Total earnings
         </h3>
-        <ResponsiveContainer width="100%" height="80%">
-          <LineChart
-            data={chartData}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#f0f0f0"
-              vertical={false}
-            />
-            <XAxis
-              dataKey="date"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#6b7280", fontSize: 12 }}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#6b7280", fontSize: 12 }}
-            />
-            <Tooltip
-              content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  const data = payload[0].payload;
-                  return (
-                    <div className="bg-white p-3 rounded-lg shadow-md border border-gray-200">
-                      <p className="font-medium text-gray-900">
-                        {new Date(data.fullDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </p>
-                      <p className="text-indigo-600">
-                        Total Bookings: {data.count > 0 ? data.count : "0"}
-                      </p>
-                      {data.COMPLETED ? (
-                        <p className="text-green-500">
-                          Completed: {data.COMPLETED}
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                      {data.PENDING ? (
-                        <p className="text-yellow-500">
-                          Pending: {data.PENDING}
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                      {data.CANCELLED ? (
-                        <p className="text-red-500">
-                          Cancelled: {data.CANCELLED}
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Line
-              type="monotone"
-              dataKey="count"
-              stroke="#6366F1"
-              strokeWidth={3}
-              dot={false}
-              activeDot={{
-                r: 8,
-                fill: "#6366F1",
-                stroke: "white",
-                strokeWidth: 2,
-              }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3">
+          <p className="text-2xl md:text-4xl font-semibold text-secondaryColor mt-2">
+            $ 12,540
+          </p>
+
+          <div className="bg-[#f8f7ff] w-24 h-10 flex gap-2 items-center justify-center border-2 border-[#7b61ff] rounded-3xl">
+            <HiOutlineArrowNarrowUp className="text-[#7b61ff] h-24" />
+            <p className="text-[#7b61ff] text-sm font-medium leading-normal">
+              100%
+            </p>
+          </div>
+        </div>
+
+        <div className="w-full">
+          <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={chartData}
+                margin={{
+                  left: 0,
+                  right: 20,
+                  top: 20,
+                  bottom: 20,
+                }}
+              >
+                <CartesianGrid strokeDasharray="" stroke="#e0e0e0" />
+                <XAxis
+                  dataKey="day"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  domain={[1, 31]}
+                  type="number"
+                  scale="linear"
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  domain={[2000, 20000]}
+                  tickFormatter={(value) => value.toLocaleString()}
+                  ticks={[
+                    2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000,
+                    20000,
+                  ]}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Line
+                  dataKey="value"
+                  type="monotone"
+                  stroke="var(--color-value)"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{
+                    r: 9,
+                    stroke: "var(--color-value)",
+                    strokeWidth: 2,
+                    fill: "white",
+                  }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </div>
       </div>
 
       {/* Booking Status Distribution */}

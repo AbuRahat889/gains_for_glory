@@ -60,7 +60,7 @@ function Dashboard() {
     });
 
   return (
-    <div className="min-h-screen bg-white border my-6 mx-12 rounded-sm">
+    <div className=" bg-white border my-6 mx-12 rounded-sm">
       <div className="p-4 md:p-8">
         {/* Header */}
         <header className="flex justify-between items-center relative">
@@ -79,11 +79,12 @@ function Dashboard() {
         />
 
         {/* Month/Year Selector */}
-        <div className="mt-6 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+        <div className="mt-6 bg-white p-4 rounded-lg shadow-sm border border-[#b9b9b9]">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Service Analytics
+            <h2 className="text-lg font-semibold text-[#7b61ff]">
+              Total Earning
             </h2>
+            {/* filtering  */}
             <div className="flex gap-3">
               <div className="relative">
                 <select
@@ -137,7 +138,7 @@ function Dashboard() {
           </div>
 
           {/* Chart */}
-          <div className="mt-4">
+          <div className="mt-4 min-h-screen">
             <Chart
               chatInfo={dashboardInfo?.data?.dailyServiceCounts}
               isLoading={chartLoading}
