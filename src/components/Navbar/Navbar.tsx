@@ -3,6 +3,7 @@
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
 import profileImage from "@/assets/team1.jpg";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -11,12 +12,14 @@ export default function Navbar() {
     >
       <div className="flex justify-between w-full">
         <div className="relative  flex-1">
-          <Image
-            src={logo}
-            alt="Logo"
-            className="object-contain h-full"
-            priority
-          />
+          <Link href={"/"}>
+            <Image
+              src={logo}
+              alt="Logo"
+              className="object-contain h-full"
+              priority
+            />
+          </Link>
         </div>
         <div className=" flex items-center gap-3">
           <Image
