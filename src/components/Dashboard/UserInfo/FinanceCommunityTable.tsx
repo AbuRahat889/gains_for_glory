@@ -6,11 +6,11 @@ import {
 } from "@/redux/api/booking";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import Pagination from "../DatePicker/Pagination";
+import Pagination from "../../DatePicker/Pagination";
 import deleteImage from "@/assets/icon/delete.svg";
 import Image from "next/image";
 
-const AllBookingTable = () => {
+const FinanceCommunityTable = () => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -155,12 +155,6 @@ const AllBookingTable = () => {
                       alt="delete icon"
                       className="h-6 w-6 text-[#EF4444] hover:text-red-600 cursor-pointer"
                     />
-                    {/* <button
-                      onClick={() => handleDelete(info?.id)}
-                      className="h-6 w-6 text-[#EF4444] hover:text-red-600"
-                    >
-                      <AiOutlineDelete className="h-5 w-5" />
-                    </button> */}
                   </td>
                 </tr>
               ))
@@ -179,4 +173,4 @@ const AllBookingTable = () => {
   );
 };
 
-export default AllBookingTable;
+export default FinanceCommunityTable;
