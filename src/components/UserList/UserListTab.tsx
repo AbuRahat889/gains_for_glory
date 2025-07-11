@@ -2,8 +2,8 @@
 import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
-import AllUserTable from "./AllUser";
-import FreeTrialTable from "./FreeTrial";
+import AllUserTable from "./AllUserTable";
+import FreeTrialTable from "./FreeTrialTable";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -80,7 +80,7 @@ const items: TabsProps["items"] = [
   },
 ];
 
-const AllUserList: React.FC = () => (
+const AllUserTab: React.FC = () => (
   <Tabs
     className="custom-tabs"
     defaultActiveKey="1"
@@ -92,4 +92,4 @@ const AllUserList: React.FC = () => (
   />
 );
 
-export default AllUserList;
+export default AllUserTab;

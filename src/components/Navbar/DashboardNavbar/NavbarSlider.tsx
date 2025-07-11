@@ -2,37 +2,17 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { IoClose, IoLogOut } from "react-icons/io5";
-import { FiMenu } from "react-icons/fi";
-import { RiDashboardHorizontalFill } from "react-icons/ri";
-import { Group } from "lucide-react";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
-import { BsJournalText } from "react-icons/bs";
 import { logout } from "@/redux/slices/authSlice";
-import { SlCalender } from "react-icons/sl";
+import { FiMenu } from "react-icons/fi";
+import { navigation } from "@/constants/Navigation";
+import { useDispatch } from "react-redux";
 
 // Sidebar Props
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
 }
-
-const navigation = [
-  {
-    label: "Dashboard",
-    route: "/",
-    iconPath: <RiDashboardHorizontalFill />,
-  },
-  {
-    label: "User Request",
-    route: "/user-request",
-    iconPath: <BsJournalText />,
-  },
-  { label: "User List", route: "/user-list", iconPath: <SlCalender /> },
-  { label: "Videos", route: "/customer-info", iconPath: <Group /> },
-  { label: "My Product", route: "/customer-info", iconPath: <Group /> },
-  { label: "My Orders", route: "/customer-info", iconPath: <Group /> },
-];
 
 const NavbarSlider = ({ isOpen, toggleSidebar }: SidebarProps) => {
   const path = usePathname();
@@ -66,19 +46,6 @@ const NavbarSlider = ({ isOpen, toggleSidebar }: SidebarProps) => {
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Logo
-          {isOpen && (
-            <Link href="/" className="flex justify-center pb-4">
-              <Image
-                width={200}
-                height={200}
-                className="w-full h-24"
-                src={logo}
-                alt="logo_image"
-              />
-            </Link>
-          )} */}
-
           <div className={`flex flex-col ${isOpen ? "pt-6" : "pt-6"}`}>
             {/* Navigation */}
             <ul className="ml-6">
@@ -93,7 +60,12 @@ const NavbarSlider = ({ isOpen, toggleSidebar }: SidebarProps) => {
                         : "text-[#747474]"
                     }`}
                   >
-                    <p className="text-xl">{item.iconPath}</p>
+                    {path === item.route ? (
+                      <p className="text-xl transition-colors ease-in-out duration-300">{item.whiteIcon}</p>
+                    ) : (
+                      <p className="text-xl">{item.iconPath}</p>
+                    )}
+
                     {isOpen && <p className="text-sm">{item.label}</p>}
                   </Link>
                 </li>
