@@ -8,9 +8,6 @@ import {
   ResponsiveContainer,
   Line,
   LineChart,
-  Bar,
-  BarChart,
-  Legend,
 } from "recharts";
 import { useMemo } from "react";
 
@@ -26,20 +23,12 @@ interface ChartProps {
   isLoading?: boolean;
 }
 
-// const statusColors = {
-//   COMPLETED: "#10B981",
-//   PENDING: "#F59E0B",
-//   CANCELLED: "#EF4444",
-// };
-
 const Chart: React.FC<ChartProps> = ({ chatInfo, isLoading }) => {
   const chartData = useMemo(() => {
     if (!chatInfo) return [];
 
     return chatInfo.map((day) => {
-
       const bookings = day.bookings || [];
-
 
       // Initialize counters
       let completed = 0;
@@ -75,7 +64,6 @@ const Chart: React.FC<ChartProps> = ({ chatInfo, isLoading }) => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-
 
   if (!chatInfo || !chatInfo?.length) {
     return (
@@ -179,88 +167,6 @@ const Chart: React.FC<ChartProps> = ({ chatInfo, isLoading }) => {
       </div>
 
       {/* Booking Status Distribution */}
-      <div className="h-72 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Booking Status Distribution
-        </h3>
-        <ResponsiveContainer width="100%" height="80%">
-          <BarChart
-            data={chartData}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#f0f0f0"
-              vertical={false}
-            />
-            <XAxis
-              dataKey="date"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#6b7280", fontSize: 12 }}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#6b7280", fontSize: 12 }}
-              allowDecimals={false}
-            />
-            <Tooltip
-              content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  const data = payload[0].payload;
-                  return (
-                    <div className="bg-white p-3 rounded-lg shadow-md border border-gray-200">
-                      <p className="font-medium text-gray-900">
-                        {new Date(data.fullDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </p>
-                      <p className="text-green-500">
-                        Completed: {data.COMPLETED}
-                      </p>
-                      <p className="text-yellow-500">Pending: {data.PENDING}</p>
-                      <p className="text-red-500">
-                        Cancelled: {data.CANCELLED}
-                      </p>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
-            <Legend />
-            <Bar
-              dataKey="COMPLETED"
-              stackId="a"
-              fill="#10B981"
-              name="Completed"
-              radius={[4, 4, 0, 0]}
-            />
-            <Bar
-              dataKey="PENDING"
-              stackId="a"
-              fill="#F59E0B"
-              name="Pending"
-              radius={[4, 4, 0, 0]}
-            />
-            <Bar
-              dataKey="CANCELLED"
-              stackId="a"
-              fill="#EF4444"
-              name="Cancelled"
-              radius={[4, 4, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
     </div>
   );
 };

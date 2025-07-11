@@ -4,7 +4,7 @@ import Dashboard from "@/components/Dashboard/Dashboard";
 
 export default function Page() {
   return (
-    <div className="w-full h-full bg-[#FAFAFA]">
+    <div className="w-full h-full bg-white">
       <Dashboard />
     </div>
   );

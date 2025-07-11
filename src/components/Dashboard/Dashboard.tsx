@@ -1,11 +1,7 @@
 "use client";
-
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import StatCards from "./StatCards";
 import Chart from "./Charts";
-import AllBookingTable from "./AllBookingTable";
-import { useGetTodayBookingQuery } from "@/redux/api/booking";
 import { useGetAllDashboardInfoQuery } from "@/redux/api/dashboard";
 
 function getTodayDate() {
@@ -42,8 +38,6 @@ function getTodayDate() {
 }
 
 function Dashboard() {
-  const { data, isLoading } = useGetTodayBookingQuery({});
-
   const today = new Date();
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(today.getFullYear());
@@ -66,7 +60,7 @@ function Dashboard() {
     });
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-white border my-6 mx-12 rounded-sm">
       <div className="p-4 md:p-8">
         {/* Header */}
         <header className="flex justify-between items-center relative">
@@ -115,6 +109,7 @@ function Dashboard() {
                   </svg>
                 </div>
               </div>
+
               {/* selected year  */}
               <div className="relative">
                 <select
@@ -148,24 +143,6 @@ function Dashboard() {
               isLoading={chartLoading}
             />
           </div>
-        </div>
-
-        {/* New Booking Section */}
-        <div className="md:flex justify-between items-center p-6 mt-6 bg-white rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-2xl leading-normal font-bold">Today Bookings</h2>
-          <Link
-            href={"/all-booking"}
-            className="underline text-base font-normal leading-normal text-primary hover:text-primary-dark transition-colors"
-          >
-            See all
-          </Link>
-        </div>
-        <div className="py-10">
-          {data?.data?.length === 0 ? (
-            <div className="text-center mt-5">No Bookings today</div>
-          ) : (
-            <AllBookingTable bookingInfo={data?.data} isLoading={isLoading} />
-          )}
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
+import Navbar from "@/components/Navbar/Navbar";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -26,6 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={` ${poppins.variable} antialiased`}>
         <ReduxProvider>
+          <Navbar />
           <div className="">{children}</div>
         </ReduxProvider>
         <ToastContainer />
