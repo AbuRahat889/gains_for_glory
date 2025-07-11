@@ -23,7 +23,11 @@ const navigation = [
     route: "/",
     iconPath: <RiDashboardHorizontalFill />,
   },
-  { label: "User Request", route: "/all-booking", iconPath: <BsJournalText /> },
+  {
+    label: "User Request",
+    route: "/user-request",
+    iconPath: <BsJournalText />,
+  },
   { label: "User List", route: "/calendar", iconPath: <SlCalender /> },
   { label: "Videos", route: "/customer-info", iconPath: <Group /> },
   { label: "My Product", route: "/customer-info", iconPath: <Group /> },

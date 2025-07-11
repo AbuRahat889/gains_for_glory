@@ -1,20 +1,17 @@
 export interface BookingInfo {
-  id: string;
   service: string;
+  timeslot: string;
+  addOnes: string[];
+  date: string;
+  total: number;
   user: {
     firstName: string;
     lastName: string;
     phoneNumber: string;
   };
-  timeslot: string;
-  addOnes: Array<any>;
+
   status: "COMPLETED" | "PENDING" | "CANCELLED" | "OTHER";
   totalAmount: number;
-}
-
-export interface AllBookingTableProps {
-  bookingInfo: BookingInfo[];
-  isLoading: boolean;
 }
 
 export interface Booking {

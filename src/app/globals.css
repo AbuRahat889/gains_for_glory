@@ -28,6 +28,24 @@ body {
   background-color: transparent;
 }
 
+/* tab style  */
+.custom-tabs .ant-tabs-tab {
+  font-size: 16px;
+  font-weight: 500;
+  color: #6b7280; /* default text color */
+   padding: 10px 20px;
+}
+
+.custom-tabs .ant-tabs-tab-active {
+  color: #7b61ff !important; /* active tab text color */
+  font-weight: 600;
+  padding: 0px 20px;
+}
+
+.custom-tabs .ant-tabs-ink-bar {
+  background: #7b61ff; /* underline color */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
