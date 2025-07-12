@@ -130,12 +130,12 @@ const BibleCommunityTable = () => {
                   </td>
                   <td className="py-2 px-4">{info?.user?.phoneNumber}</td>
 
-                  <td className="py-2 px-4 text-center">{info?.totalAmount}</td>
+                  <td className="py-2 px-4">{info?.totalAmount}</td>
 
                   <td className="py-2 px-4">
                     <h1
                       onClick={() => handleUpdate(info?.id)}
-                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer  ${
+                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer w-32 text-base  ${
                         info?.status === "COMPLETED"
                           ? "bg-[#7b61ff]"
                           : info?.status === "PENDING"
@@ -145,7 +145,7 @@ const BibleCommunityTable = () => {
                           : "bg-gray-300"
                       }`}
                     >
-                      {info?.status}
+                      {info?.status.toLowerCase()}
                     </h1>
                   </td>
                   <td className="py-2 px-4 flex justify-center">

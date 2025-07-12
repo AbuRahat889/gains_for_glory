@@ -1,4 +1,5 @@
 import DashboardNavbar from "@/components/Navbar/DashboardNavbar/DashboardNavbar";
+import Navbar from "@/components/Navbar/Navbar";
 import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({
@@ -8,6 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <main>
+      <Navbar />
       <div className="flex max-h-screen">
         <ToastContainer />
         <DashboardNavbar />
