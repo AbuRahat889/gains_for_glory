@@ -119,7 +119,7 @@ export default function UploadMedia({ name, onUpload }: UploadMediaProps) {
             onDrop={handleDrop}
           >
             <Upload className="h-12 w-12 text-blue-500 mx-auto" />
-            <p className="text-sm md:text-lg text-gray-700">
+            <p className="text-sm md:text-lg text-gray-700 mb-3">
               Drag & Drop your files
             </p>
             <button

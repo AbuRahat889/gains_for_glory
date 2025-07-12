@@ -5,7 +5,7 @@ import shirt from "@/assets/lemon.png";
 
 export default function ProductCard() {
   return (
-    <div className="w-full md:w-80 rounded-2xl  overflow-hidden shadow-lg">
+    <div className="w-full md:w-80 rounded-2xl  overflow-hidden">
       {/* Product Image Container */}
       <div className="relative bg-gray-100">
         {/* Heart Icon */}
@@ -32,7 +32,7 @@ export default function ProductCard() {
       </div>
 
       {/* Product Details */}
-      <div className="py-6 px-2">
+      <div className="py-6">
         {/* Product Title and Price */}
         <div className="flex flex-col md:flex-row justify-between items-start mb-4">
           <h3 className="text-sm md:text-lg font-bold text-primaryColor">

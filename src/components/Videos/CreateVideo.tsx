@@ -3,7 +3,7 @@ import { FormInput } from "../ui/Input";
 import UploadMedia from "../ui/UploadMedia";
 import { Button } from "../ui/button";
 
-type FormValues = {
+export type FormValues = {
   name: string;
   age: number;
   email: string;

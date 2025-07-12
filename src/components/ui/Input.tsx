@@ -23,10 +23,12 @@ export function FormInput<T extends FieldValues>({
 
   return (
     <div className="mb-4">
-    
       <input
         id={name}
         {...register(name, {
+          required: `${
+            name.charAt(0).toUpperCase() + name.slice(1)
+          } is required`,
           valueAsNumber: rest.type === "number", // convert input value to number if type is number
         })}
         {...rest}
