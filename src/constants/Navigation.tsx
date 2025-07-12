@@ -263,7 +263,7 @@ export const navigation = [
   },
   {
     label: "My Product",
-    route: "/videos",
+    route: "/my-product",
     iconPath: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
