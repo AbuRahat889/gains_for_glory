@@ -1,8 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
-
-import Blog from "@/components/Home/Blog";
+import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -108,7 +106,7 @@ export default function Page() {
               )}
             </div>
 
-            <Button type="submit" variant="primary" className="w-full">
+            <Button type="submit" variant="default" className="w-full">
               Set new password
             </Button>
           </div>
@@ -120,7 +118,7 @@ export default function Page() {
           </Link>
         </h1>
       </div>
-      <Blog />
+
     </div>
   );
 }

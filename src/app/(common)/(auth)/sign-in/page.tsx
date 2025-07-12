@@ -1,7 +1,5 @@
 "use client";
 
-import Button from "@/components/Button";
-import Blog from "@/components/Home/Blog";
 import { useLoginUserMutation } from "@/redux/api/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,6 +9,7 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/authSlice";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const [isFocused, setIsFocused] = useState(false);
@@ -122,7 +121,7 @@ export default function Page() {
               </p>
             )}
           </div>
-          <Button type="submit" variant="primary" className="w-full">
+          <Button type="submit" variant="default" className="w-full">
             {isLoading ? "Loading..." : "Login"}
           </Button>
         </div>
@@ -134,7 +133,7 @@ export default function Page() {
         </Link>
       </h1>
 
-      <Blog />
+   
     </div>
   );
 }

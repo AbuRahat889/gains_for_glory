@@ -224,7 +224,7 @@ export const navigation = [
   },
   {
     label: "Videos",
-    route: "/customer-info",
+    route: "/videos",
     iconPath: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -263,7 +263,7 @@ export const navigation = [
   },
   {
     label: "My Product",
-    route: "/customer-info",
+    route: "/videos",
     iconPath: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

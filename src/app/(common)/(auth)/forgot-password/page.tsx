@@ -1,7 +1,7 @@
 "use client";
 
-import Button from "@/components/Button";
-import Blog from "@/components/Home/Blog";
+
+import { Button } from "@/components/ui/button";
 import { useForgotPasswordMutation } from "@/redux/api/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -96,7 +96,7 @@ export default function Page() {
                 </p>
               )}
             </div>
-            <Button type="submit" variant="primary" className="w-full">
+            <Button type="submit" variant="default" className="w-full">
               {isLoading ? "Loading..." : "Send e-mail"}
             </Button>
           </div>
@@ -108,7 +108,7 @@ export default function Page() {
           </Link>
         </h1>
       </div>
-      <Blog />
+     
     </div>
   );
 }
