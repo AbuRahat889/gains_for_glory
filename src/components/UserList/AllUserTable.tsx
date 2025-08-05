@@ -1,8 +1,8 @@
 "use client";
-import { useGetAllBookingQuery } from "@/redux/api/booking";
 import React, { useState } from "react";
 import Pagination from "../ui/Pagination";
 import { ChevronDownIcon } from "lucide-react";
+import { useGetAllUsersQuery } from "@/redux/api/userApi";
 
 const options = ["Active", "Block"];
 
@@ -10,13 +10,11 @@ const AllUserTable = () => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useGetAllBookingQuery({
-    page: currentPage,
-    limit: 10,
-  });
+  const { data, isLoading } = useGetAllUsersQuery({});
+  console.log(data);
 
-  const totalPages = data?.data?.meta?.totalPage || 1;
-  const currentItems = data?.data?.data || [];
+  const totalPages = data?.data || 1;
+  const currentItems = data?.data || [];
 
   const [dropdownStates, setDropdownStates] = useState<{
     [key: string]: boolean;
@@ -94,26 +92,28 @@ const AllUserTable = () => {
                   className="border-t border-[#D1D5DB] text-sm md:text-base text-textColor font-medium"
                 >
                   <td className="py-2 px-4">{index + 1}</td>
-                  <td className="py-2 px-4">{info?.service}</td>
-                  <td className="py-2 px-4">
-                    {info?.user?.firstName} {info?.user?.lastName}
-                  </td>
-                  <td className="py-2 px-4">{info?.user?.phoneNumber}</td>
+                  <td className="py-2 px-4">{info?.name}</td>
+                  <td className="py-2 px-4">{info?.email || "N/A"}</td>
+                  <td className="py-2 px-4">{info?.location}</td>
 
-                  <td className="py-2 px-4">{info?.totalAmount}</td>
-                  <td className="py-2 px-4 ">10</td>
+                  <td className="py-2 px-4">{info?.subscription}</td>
+                  <td className="py-2 px-4 ">{info?.referPoint}</td>
 
                   <td className="py-2 px-4">
                     <div className="relative inline-block text-left">
                       <button
                         onClick={() => toggleDropdown(info.id)}
                         className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-sm md:text-base ${
-                          (statusMap[info.id] || info.status) === "Active"
+                          (statusMap[info.id] || info.status) === "ACTIVE"
                             ? "bg-green-50 text-green-600"
                             : "bg-red-50 text-red-600"
                         } font-medium text-sm focus:outline-none`}
                       >
-                        {statusMap[info.id] || info.status || "Active"}
+                        {statusMap[info.id] || info.status === "ACTIVE"
+                          ? "Active"
+                          : info.status === "PENDING"
+                          ? "Block"
+                          : ""}
                         <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                       </button>
 

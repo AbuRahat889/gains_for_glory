@@ -1,19 +1,21 @@
 "use client";
-import { useGetAllBookingQuery } from "@/redux/api/booking";
 import React, { useState } from "react";
 import Pagination from "../ui/Pagination";
+import { useGetAllUsersByParamsQuery } from "@/redux/api/userApi";
 
-const FreeTrialTable = () => {
+interface SubscriptionTypeTableProps {
+  search: string;
+}
+
+const SubscriptionTypeTable = ({ search }: SubscriptionTypeTableProps) => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useGetAllBookingQuery({
-    page: currentPage,
-    limit: 10,
-  });
+  const { data, isLoading } = useGetAllUsersByParamsQuery(search);
+  console.log(data);
 
-  const totalPages = data?.data?.meta?.totalPage || 1;
-  const currentItems = data?.data?.data || [];
+  const totalPages = data?.data || 1;
+  const currentItems = data?.data || [];
 
   return (
     <div className=" bg-white">
@@ -67,46 +69,12 @@ const FreeTrialTable = () => {
                   className="border-t border-[#D1D5DB] text-sm md:text-base text-textColor font-medium"
                 >
                   <td className="py-2 px-4">{index + 1}</td>
-                  <td className="py-2 px-4">{info?.service}</td>
-                  <td className="py-2 px-4">
-                    {info?.user?.firstName} {info?.user?.lastName}
-                  </td>
-                  <td className="py-2 px-4">{info?.user?.phoneNumber}</td>
+                  <td className="py-2 px-4">{info?.name}</td>
+                  <td className="py-2 px-4">{info?.email || "N/A"}</td>
+                  <td className="py-2 px-4">{info?.location}</td>
 
-                  <td className="py-2 px-4">{info?.totalAmount}</td>
-                  <td className="py-2 px-4 ">10</td>
-
-                  {/* <td className="py-2 px-4">
-                    <div className="relative inline-block text-left">
-                      <button
-                        onClick={() => toggleDropdown(info.id)}
-                        className={`flex items-center gap-1 px-4 py-1.5 rounded-full ${
-                          (statusMap[info.id] || info.status) === "Active"
-                            ? "bg-green-50 text-green-600"
-                            : "bg-red-50 text-red-600"
-                        } font-medium text-sm focus:outline-none`}
-                      >
-                        {statusMap[info.id] || info.status || "Active"}
-                        <ChevronDownIcon className="w-4 h-4 text-gray-500" />
-                      </button>
-
-                      {dropdownStates[info.id] && (
-                        <div className="absolute mt-2 w-28 rounded-md bg-white shadow-lg z-50">
-                          <div className="py-1">
-                            {options.map((option) => (
-                              <button
-                                key={option}
-                                onClick={() => handleSelect(info.id, option)}
-                                className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
-                              >
-                                {option}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td> */}
+                  <td className="py-2 px-4">{info?.subscription}</td>
+                  <td className="py-2 px-4 ">{info?.referPoint}</td>
                 </tr>
               ))
             )}
@@ -124,4 +92,4 @@ const FreeTrialTable = () => {
   );
 };
 
-export default FreeTrialTable;
+export default SubscriptionTypeTable;
