@@ -41,7 +41,7 @@ export default function MerchandiseProduct() {
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
           noValidate
-          className="space-y-5 flex gap-8 w-full justify-between"
+          className="space-y-5 flex flex-col md:flex-row gap-8 w-full justify-between"
         >
           <div className="w-full">
             <FormInput<FormValues>
@@ -79,13 +79,13 @@ export default function MerchandiseProduct() {
                 </button>
               </div>
 
-              <div className="flex gap-5 flex-wrap">
+              <div className="flex gap-3 md:gap-5 flex-wrap">
                 {sizes.map((size) => (
                   <button
                     key={size}
                     type="button"
                     onClick={() => handleSizeToggle(size)}
-                    className={`px-4 py-3 text-lg font-medium rounded-md border transition-all duration-200 ${
+                    className={`px-2 md:px-4 py-2 md:py-3 text-sm md:text-lg font-medium rounded-md border transition-all duration-200 ${
                       selectedSizes.includes(size)
                         ? "bg-orange-500 text-white border-orange-500 shadow-sm"
                         : "bg-[#edeef4] text-[#999999] border-[#D9D9D9] hover:bg-gray-100 hover:border-gray-300"

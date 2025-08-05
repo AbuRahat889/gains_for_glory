@@ -46,7 +46,7 @@ const AllUserTable = () => {
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px]">
           <thead>
-            <tr className=" text-secondaryColor text-left text-base font-medium ">
+            <tr className=" text-secondaryColor text-left text-sm md:text-base font-medium ">
               <th className="py-2 px-4">#</th>
               <th className="py-2 px-4">Name</th>
               <th className="py-2 px-4">Email</th>
@@ -91,7 +91,7 @@ const AllUserTable = () => {
               currentItems?.map((info: any, index: number) => (
                 <tr
                   key={info?.id}
-                  className="border-t border-[#D1D5DB] text-base text-textColor font-medium"
+                  className="border-t border-[#D1D5DB] text-sm md:text-base text-textColor font-medium"
                 >
                   <td className="py-2 px-4">{index + 1}</td>
                   <td className="py-2 px-4">{info?.service}</td>
@@ -107,7 +107,7 @@ const AllUserTable = () => {
                     <div className="relative inline-block text-left">
                       <button
                         onClick={() => toggleDropdown(info.id)}
-                        className={`flex items-center gap-1 px-4 py-1.5 rounded-full ${
+                        className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-sm md:text-base ${
                           (statusMap[info.id] || info.status) === "Active"
                             ? "bg-green-50 text-green-600"
                             : "bg-red-50 text-red-600"

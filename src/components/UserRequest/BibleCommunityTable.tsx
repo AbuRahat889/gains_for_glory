@@ -76,7 +76,7 @@ const BibleCommunityTable = () => {
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px]">
           <thead>
-            <tr className=" text-secondaryColor text-left text-base font-medium ">
+            <tr className=" text-secondaryColor text-left text-sm md:text-base font-medium ">
               <th className="py-2 px-4">#</th>
               <th className="py-2 px-4">Name</th>
               <th className="py-2 px-4">Email</th>
@@ -121,7 +121,7 @@ const BibleCommunityTable = () => {
               currentItems?.map((info: any, index: number) => (
                 <tr
                   key={info?.id}
-                  className="border-t border-[#D1D5DB] text-base text-textColor font-medium"
+                  className="border-t border-[#D1D5DB] text-sm md:text-base text-textColor font-medium"
                 >
                   <td className="py-2 px-4">{index + 1}</td>
                   <td className="py-2 px-4">{info?.service}</td>
@@ -135,7 +135,7 @@ const BibleCommunityTable = () => {
                   <td className="py-2 px-4">
                     <h1
                       onClick={() => handleUpdate(info?.id)}
-                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer w-32 text-base  ${
+                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer w-16 md:w-32 text-sm md:text-base  ${
                         info?.status === "COMPLETED"
                           ? "bg-[#7b61ff]"
                           : info?.status === "PENDING"

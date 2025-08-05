@@ -35,7 +35,7 @@ export default function SupplementsProduct() {
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
           noValidate
-          className="space-y-5 flex gap-8 w-full justify-between"
+          className="space-y-5 flex flex-col md:flex-row  gap-8 w-full justify-between"
         >
           <div className="w-full">
             <FormInput<FormValues>
