@@ -7,6 +7,8 @@ import { logout } from "@/redux/slices/authSlice";
 import { FiMenu } from "react-icons/fi";
 import { navigation } from "@/constants/Navigation";
 import { useDispatch } from "react-redux";
+import logo from "@/assets/logo.svg";
+import Image from "next/image";
 
 // Props
 interface SidebarProps {
@@ -34,7 +36,7 @@ const NavbarSlider = ({
 
   // Sidebar content
   const sidebarContent = (
-    <aside className="w-[240px] h-full bg-white flex flex-col justify-between font-inter shadow-md z-[999]">
+    <aside className="w-[240px] mt-0 md:mt-32 h-full bg-white flex flex-col justify-between font-inter shadow-none md:shadow-md z-[999]">
       <div className="pt-6">
         <ul className="ml-6">
           {navigation?.map((item) => (
@@ -93,9 +95,9 @@ const NavbarSlider = ({
       {isMobile && (
         <button
           onClick={openDrawer}
-          className="absolute top-3 m-4 p-2 text-black rounded-md bg-red-500 shadow-md z-[99]"
+          className="absolute top-3 m-4 p-2 text-black rounded-md  z-[99]"
         >
-          <FiMenu size={20} />
+          <FiMenu size={30} />
         </button>
       )}
 
@@ -108,8 +110,15 @@ const NavbarSlider = ({
             onClick={closeDrawer}
           />
           {/* Drawer */}
-          <div className="fixed top-0 left-0 h-full w-[240px] bg-white shadow-lg z-[999] transition-transform transform translate-x-0">
-            <div className="flex justify-end p-4">
+
+          <div className="fixed top-0 left-0 h-full w-[260px] bg-white  z-[999] transition-transform transform translate-x-0">
+            <div className="flex justify-between p-2">
+              <Image
+                src={logo}
+                alt="Logo"
+                className="object-contain "
+                priority
+              />
               <button onClick={closeDrawer}>
                 <IoClose size={24} />
               </button>

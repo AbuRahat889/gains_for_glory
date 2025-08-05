@@ -23,7 +23,7 @@ const DashboardNavbar = () => {
   if (pathName === "/privacy-policy") return null;
 
   return (
-    <div >
+    <div>
       <NavbarSlider
         isMobile={isMobile}
         isDrawerOpen={isDrawerOpen}
