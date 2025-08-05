@@ -89,14 +89,14 @@ const Chart: React.FC<ChartProps> = ({ chatInfo }) => {
         <h3 className="text-base font-normal text-textColor mb-4">
           Total earnings
         </h3>
-        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3">
+        <div className="flex flex-row md:flex-col lg:flex-row items-center md:items-start lg:items-center gap-3">
           <p className="text-2xl md:text-4xl font-semibold text-secondaryColor mt-2">
             $ 12,540
           </p>
 
-          <div className="bg-[#f8f7ff] w-24 h-10 flex gap-2 items-center justify-center border-2 border-[#7b61ff] rounded-3xl">
-            <HiOutlineArrowNarrowUp className="text-[#7b61ff] h-24" />
-            <p className="text-[#7b61ff] text-sm font-medium leading-normal">
+          <div className="bg-[#f8f7ff] w-16 md:w-24 h-8 md:h-10 flex  gap-2 items-center justify-center border-2 border-[#7b61ff] rounded-3xl">
+            <HiOutlineArrowNarrowUp className="text-[#7b61ff] h-16 md:h-24" />
+            <p className="text-[#7b61ff] text-xs md:text-sm font-medium leading-normal">
               100%
             </p>
           </div>
