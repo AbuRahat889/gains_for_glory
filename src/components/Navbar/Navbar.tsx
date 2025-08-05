@@ -11,7 +11,7 @@ export default function Navbar() {
       className={` mx-auto border-b border-[#b9b9b9] h-24 flex px-5 md:px-28 fixed bg-white z-[9] w-full`}
     >
       <div className="flex justify-between w-full">
-        <div className="relative  flex-1">
+        <div className="hidden md:block relative  flex-1">
           <Link href={"/"}>
             <Image
               src={logo}
@@ -21,6 +21,7 @@ export default function Navbar() {
             />
           </Link>
         </div>
+        <div></div>
 
         <div className=" flex items-center gap-3">
           <Image
