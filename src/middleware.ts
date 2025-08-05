@@ -8,7 +8,7 @@ export function middleware(req: NextRequest) {
   // If the user is not authenticated and trying to access a protected route
   if (!token) {
     // Encode pathname for safety
-    const destination = `/sign-in`; // Redirect to login with intended path
+    const destination = `/auth/login`; // Redirect to login with intended path
 
     return NextResponse.redirect(new URL(destination, req.url));
   }
@@ -19,6 +19,7 @@ export function middleware(req: NextRequest) {
 // Apply the middleware only to specific paths
 export const config = {
   matcher: [
+    "/",
     // "/dashboard",
     // "/customer-info",
     // "/all-booking",
