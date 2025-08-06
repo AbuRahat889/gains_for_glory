@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
-import profileImage from "@/assets/team1.jpg";
+import profileImage from "@/assets/profile.jpg";
 import Link from "next/link";
+import { useGetMeQuery } from "@/redux/api/auth";
 
 export default function Navbar() {
+  const { data } = useGetMeQuery("");
+  console.log(data);
   return (
     <nav
       className={` mx-auto border-b border-[#b9b9b9] h-24 flex px-5 md:px-28 fixed bg-white z-[9] w-full`}
@@ -27,15 +30,15 @@ export default function Navbar() {
           <Image
             src={profileImage}
             alt="Logo"
-            className="h-11 w-11 rounded-full"
+            className="h-14 w-14 rounded-full border-2 border-primaryColor"
             priority
           />
           <div>
             <h1 className="text-[#171717] text-base font-semibold leading-normal">
-              Aj Breslin
+              {data?.data?.name || "Admin"}
             </h1>
             <h1 className="text-[#747474] text-base font-normal leading-normal">
-              Admin
+              {data?.data?.role || "Admin"}
             </h1>
           </div>
         </div>

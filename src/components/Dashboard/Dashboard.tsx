@@ -55,7 +55,6 @@ function Dashboard() {
   const { data: dashboardInfo } = useGetAllDashboardInfoQuery({
     year: selectedYear,
   });
-  console.log(dashboardInfo, "dashboardInfo");
 
   return (
     <div className=" bg-white border-none md:border my-6 px-5 rounded-sm">
@@ -110,7 +109,7 @@ function Dashboard() {
 
           {/* Chart */}
           <div className="mt-4 ">
-            <Chart />
+            <Chart data={dashboardInfo} />
           </div>
         </div>
       </div>
