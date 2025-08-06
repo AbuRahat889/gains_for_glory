@@ -2,8 +2,7 @@
 import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
-import AllVideos from "./AllVideos";
-import CreateVideo from "./CreateVideo";
+import AllOrderListTable from "./AllOrderListTable";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -22,11 +21,12 @@ const items: TabsProps["items"] = [
           lineHeight: "normal",
         }}
       >
-        All Video
+        Order List
       </span>
     ),
-    children: <AllVideos />,
+    children: <AllOrderListTable status="PENDING" />,
   },
+
   {
     key: "2",
     label: (
@@ -39,14 +39,14 @@ const items: TabsProps["items"] = [
           lineHeight: "normal",
         }}
       >
-        Create New
+        Complete Order
       </span>
     ),
-    children: <CreateVideo />,
+    children: <AllOrderListTable status="COMPLETED" />,
   },
 ];
 
-const VideosTab: React.FC = () => (
+const AllOrderTab: React.FC = () => (
   <Tabs
     className="custom-tabs"
     defaultActiveKey="1"
@@ -58,4 +58,4 @@ const VideosTab: React.FC = () => (
   />
 );
 
-export default VideosTab;
+export default AllOrderTab;

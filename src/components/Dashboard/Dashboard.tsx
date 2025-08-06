@@ -39,7 +39,6 @@ function getTodayDate() {
 
 function Dashboard() {
   const today = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(today.getFullYear());
   const [availableYears, setAvailableYears] = useState<number[]>([]);
 
@@ -53,11 +52,9 @@ function Dashboard() {
     setAvailableYears(years);
   }, []);
 
-  const { data: dashboardInfo, isLoading: chartLoading } =
-    useGetAllDashboardInfoQuery({
-      month: selectedMonth,
-      year: selectedYear,
-    });
+  const { data: dashboardInfo } = useGetAllDashboardInfoQuery({
+    year: selectedYear,
+  });
 
   return (
     <div className=" bg-white border-none md:border my-6 px-5 rounded-sm">
@@ -71,11 +68,9 @@ function Dashboard() {
 
         {/* Stats Cards */}
         <StatCards
-          totalBooking={dashboardInfo?.data?.overview?.totalBookings}
-          totalRevenue={dashboardInfo?.data?.overview?.avgRevenuePerBooking?.toFixed(
-            2
-          )}
-          totalUser={dashboardInfo?.data?.overview?.totalUsers}
+          totalUser={dashboardInfo?.data?.totalUser}
+          totalEarning={dashboardInfo?.data?.total}
+          // totalUser={dashboardInfo?.data?.overview?.totalUsers}
         />
 
         {/* Month/Year Selector */}
@@ -86,31 +81,6 @@ function Dashboard() {
             </h2>
             {/* filtering  */}
             <div className="flex gap-3">
-              <div className="relative">
-                <select
-                  value={selectedMonth}
-                  onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="appearance-none bg-white pl-3 pr-8 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm"
-                >
-                  {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-                    <option key={month} value={month}>
-                      {new Date(2000, month - 1, 1).toLocaleString("default", {
-                        month: "long",
-                      })}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                  <svg
-                    className="fill-current h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                  </svg>
-                </div>
-              </div>
-
               {/* selected year  */}
               <div className="relative">
                 <select
@@ -138,11 +108,8 @@ function Dashboard() {
           </div>
 
           {/* Chart */}
-          <div className="mt-4 min-h-screen">
-            <Chart
-              chatInfo={dashboardInfo?.data?.dailyServiceCounts}
-              isLoading={chartLoading}
-            />
+          <div className="mt-4 ">
+            <Chart data={dashboardInfo} />
           </div>
         </div>
       </div>

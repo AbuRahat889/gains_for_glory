@@ -2,9 +2,7 @@
 import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
-import BibleCommunityTable from "./BibleCommunityTable";
-import WorkoutcommunityTable from "./WorkoutcommunityTable";
-import FinanceCommunityTable from "./FinanceCommunityTable";
+import UserRequestTable from "./UserRequestTable";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -26,7 +24,7 @@ const items: TabsProps["items"] = [
         Bible Study Community
       </span>
     ),
-    children: <BibleCommunityTable />,
+    children: <UserRequestTable type="BIBLE" />,
   },
   {
     key: "2",
@@ -43,7 +41,7 @@ const items: TabsProps["items"] = [
         workout tips community
       </span>
     ),
-    children: <WorkoutcommunityTable />,
+    children: <UserRequestTable type="WORKOUT" />,
   },
   {
     key: "3",
@@ -60,7 +58,7 @@ const items: TabsProps["items"] = [
         finance community
       </span>
     ),
-    children: <FinanceCommunityTable />,
+    children: <UserRequestTable type="FINANCE" />,
   },
 ];
 

@@ -3,7 +3,7 @@ import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import AllUserTable from "./AllUserTable";
-import FreeTrialTable from "./FreeTrialTable";
+import SubscriptionTypeTable from "./SubscriptionTypeTable";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -27,23 +27,7 @@ const items: TabsProps["items"] = [
     ),
     children: <AllUserTable />,
   },
-  {
-    key: "2",
-    label: (
-      <span
-        style={{
-          color: "#7b61ff",
-          fontSize: "14px",
-          fontStyle: "normal",
-          fontWeight: 500,
-          lineHeight: "normal",
-        }}
-      >
-        Free Trial
-      </span>
-    ),
-    children: <FreeTrialTable />,
-  },
+
   {
     key: "3",
     label: (
@@ -59,7 +43,7 @@ const items: TabsProps["items"] = [
         Basic Plan
       </span>
     ),
-    children: <AllUserTable />,
+    children: <SubscriptionTypeTable search="BASIC" />,
   },
   {
     key: "4",
@@ -76,7 +60,7 @@ const items: TabsProps["items"] = [
         Premium Plan
       </span>
     ),
-    children: <AllUserTable />,
+    children: <SubscriptionTypeTable search="PREMIUM" />,
   },
 ];
 

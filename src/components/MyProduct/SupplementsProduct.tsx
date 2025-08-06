@@ -1,9 +1,16 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { FormInput } from "../ui/Input";
 import UploadMedia from "../ui/UploadMedia";
 import { Button } from "../ui/button";
+import {
+  useCreateProductMutation,
+  useEditProductMutation,
+  useGetSingleProductQuery,
+} from "@/redux/api/productApi";
+import { toast } from "react-toastify";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export type FormValues = {
   name: string;
@@ -16,18 +23,77 @@ export type FormValues = {
 };
 
 export default function SupplementsProduct() {
-  const methods = useForm<FormValues>();
+  const router = useRouter();
+  const params = useSearchParams();
+  const id = params.get("id");
+  const { data } = useGetSingleProductQuery(id, { skip: !id });
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      name: data?.data?.result?.name || "",
+      price: data?.data?.result?.price || 0,
+      photos: data?.data?.result?.image?.[0] || [],
+      description: data?.data?.result?.productDescription || "",
+      features: data?.data?.result?.keyFeature || "",
+      details: data?.data?.result?.productDetails || "",
+    },
+  });
 
-  const handleUpload = async (formData: FormData): Promise<string[] | void> => {
-    console.log(formData);
-    // const res = await uploadFile(formData).unwrap();
+  const [editProductFN, { isLoading: isLoadingEdit }] =
+    useEditProductMutation();
+  const [createProductFN, { isLoading }] = useCreateProductMutation();
+  const formData = new FormData();
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const bodyData = {
+      name: data?.name,
+      category: "supplements",
+      price: data?.price,
+      keyFeature: data?.features,
+      productDetails: data?.details,
+      productDescription: data?.description,
+    };
 
-    // return res?.success ? res?.data?.images : [];
+    data?.photos.forEach((photo) => {
+      formData.append("productImage", photo);
+    });
+    formData.append("bodyData", JSON.stringify(bodyData));
+    if (id) {
+      const response = await editProductFN({ formData, id }).unwrap();
+      console.log(response);
+      if (response?.success) {
+        methods.reset();
+        toast.success(response?.message || "Product updated successfully!");
+        router.push("/my-product");
+        // Optionally, you can show a success message or redirect
+      }
+      return;
+    }
+    try {
+      const response = await createProductFN(formData).unwrap();
+      console.log(response);
+      if (response?.success) {
+        methods.reset();
+        toast.success(response?.message || "Product created successfully!");
+        window.location.reload();
+        // Optionally, you can show a success message or redirect
+      }
+    } catch (error) {
+      console.error("Error uploading product:", error);
+    }
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Submitted data:", data);
-  };
+  // set default values for form fields
+  useEffect(() => {
+    if (data?.data?.result) {
+      methods.reset({
+        name: data.data.result.name || "",
+        price: data.data.result.price || 0,
+        photos: data.data.result.image || [],
+        description: data.data.result.productDescription || "",
+        features: data.data.result.keyFeature || "",
+        details: data.data.result.productDetails || "",
+      });
+    }
+  }, [data?.data?.result, methods]);
 
   return (
     <div className="mt-8">
@@ -90,9 +156,9 @@ export default function SupplementsProduct() {
 
           <div className="flex w-full justify-end items-end">
             <div className="w-full space-y-6">
-              <UploadMedia name="photos" onUpload={handleUpload} />
+              <UploadMedia name="photos" />
               <Button type="submit" variant="default" className="w-full p-6">
-                Create
+                {isLoading || isLoadingEdit ? "Loading..." : "Create"}
               </Button>
             </div>
           </div>

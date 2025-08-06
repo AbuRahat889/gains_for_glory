@@ -4,10 +4,9 @@ import Cookies from "js-cookie";
 
 // Utility function to handle the base API URL
 const baseApiHandler = () => {
-  const apiUrl = "http://204.197.173.249:5033/api/v1";
-  // const apiUrl = "http://10.0.10.121:5033/api/v1";
-  // const apiUrl = "http://10.0.10.121:5099/api/v1";
-  // const apiUrl = "http://localhost:5033/api/v1";
+  // const apiUrl = "http://204.197.173.249:5033/api/v1";
+  const apiUrl = "http://10.0.10.112:6032/api/v1";
+
   return apiUrl;
 };
 
@@ -20,11 +19,19 @@ export const baseApi = createApi({
       // const token = (getState() as RootState).auth.token;
       const token = Cookies.get("token");
       if (token) {
-        headers.set("Authorization", `${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["user", "service", "booking"],
+  tagTypes: [
+    "service",
+    "booking",
+    // new
+    "user",
+    "dashboard",
+    "product",
+    'order'
+  ],
 });

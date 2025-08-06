@@ -6,12 +6,12 @@ const DashboardApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     //get all user from admin dashboard
     getAllDashboardInfo: build.query({
-      query: ({ month, year }) => ({
-        url: `/booking/admin/dashboard`,
+      query: ({ year }) => ({
+        url: `/user/total-income/${year}`,
         method: "GET",
-        params: { month, year }
+        params: year,
       }),
-      providesTags: ["booking", "service", "user"],
+      providesTags: ["dashboard"],
     }),
   }),
 });
