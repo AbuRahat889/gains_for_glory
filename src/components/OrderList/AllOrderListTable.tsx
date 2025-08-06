@@ -24,7 +24,7 @@ const AllOrderListTable = ({ status }: { status: string }) => {
 
   const totalPages = data?.data?.meta?.totalPages || 1;
   const currentItems = data?.data?.data || [];
-  console.log(data);
+  console.log(totalPages);
 
   const [dropdownStates, setDropdownStates] = useState<{
     [key: string]: boolean;
