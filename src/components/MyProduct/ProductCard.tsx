@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import shirt from "@/assets/lemon.png";
 import { useDeleteProductMutation } from "@/redux/api/productApi";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 type Product = {
   id: string;
   image?: string[];
   name?: string;
   price?: number | string;
+  category: string;
   // Add other fields as needed
 };
 
@@ -17,6 +19,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  console.log(product);
   const [deleteFN] = useDeleteProductMutation();
   const handleDelete = async (id: string) => {
     Swal.fire({
@@ -73,12 +76,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Action Buttons */}
         <div className="flex flex-col md:flex-row gap-3 mt-6">
-          <Button
-            variant="outline"
-            className="flex-1 text-primaryColor border-2 border-primaryColor py-2 md:py-5 text-base font-semibold rounded-2xl hover:text-primaryColor"
+          <Link
+            href={`/edit-product/${product.category}?id=${product.id}`}
+            className="flex-1 text-primaryColor border-2 border-primaryColor py-2 text-base text-center font-semibold rounded-2xl hover:text-primaryColor"
           >
             Edit
-          </Button>
+          </Link>
           <Button
             onClick={() => handleDelete(product.id)}
             className="flex-1 bg-orange-500 border-2 border-primaryColor py-2 md:py-5 text-base font-semibold rounded-2xl"

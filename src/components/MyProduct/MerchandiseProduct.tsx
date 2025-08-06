@@ -1,12 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { FormInput } from "../ui/Input";
 import UploadMedia from "../ui/UploadMedia";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useCreateProductMutation } from "@/redux/api/productApi";
+import {
+  useCreateProductMutation,
+  useEditProductMutation,
+  useGetSingleProductQuery,
+} from "@/redux/api/productApi";
 import { toast } from "react-toastify";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export type FormValues = {
   name: string;
@@ -17,7 +22,19 @@ export type FormValues = {
 };
 
 export default function MerchandiseProduct() {
-  const methods = useForm<FormValues>();
+  const router = useRouter();
+  const params = useSearchParams();
+  const id = params.get("id");
+  const { data } = useGetSingleProductQuery(id, { skip: !id });
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      name: data?.data?.result?.name || "",
+      price: data?.data?.result?.price || 0,
+      selectedSizes: data?.data?.result?.size || [],
+      photos: data?.data?.result?.image?.[0] || [],
+      description: data?.data?.result?.productDescription || "",
+    },
+  });
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
   const sizes = ["S", "M", "L", "XL", "2XL"];
@@ -27,23 +44,9 @@ export default function MerchandiseProduct() {
     );
   };
 
-  //   description
-  // :
-  // "Dolor nulla debitis  asdf"
-  // name
-  // :
-  // "Thaddeus Carter"
-  // photos
-  // :
-  // [File]
-  // price
-  // :
-  // 782
-  // selectedSizes
-  // :
-  // (3) ['M', 'S', '2XL']
-
   const [createProductFN, { isLoading }] = useCreateProductMutation();
+  const [editProductFN, { isLoading: isLoadingEdit }] =
+    useEditProductMutation();
   const formData = new FormData();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const bodyData = {
@@ -60,6 +63,19 @@ export default function MerchandiseProduct() {
     });
     formData.append("bodyData", JSON.stringify(bodyData));
     try {
+      if (id) {
+        const response = await editProductFN({ formData, id }).unwrap();
+        console.log(response);
+        if (response?.success) {
+          methods.reset();
+          setSelectedSizes([]);
+          toast.success(response?.message || "Product updated successfully!");
+          router.push("/my-product");
+          // Optionally, you can show a success message or redirect
+        }
+        return;
+      }
+
       const response = await createProductFN(formData).unwrap();
       console.log(response);
       if (response?.success) {
@@ -74,6 +90,21 @@ export default function MerchandiseProduct() {
     }
   };
 
+  // set default values for form fields
+  useEffect(() => {
+    if (data?.data?.result) {
+      methods.reset({
+        name: data.data.result.name || "",
+        price: data.data.result.price || 0,
+        selectedSizes: data.data.result.size || [],
+        photos: data.data.result.image || [], // note: should be string[] or File[]
+        description: data.data.result.productDescription || "",
+      });
+
+      setSelectedSizes(data.data.result.size || []);
+    }
+  }, [data?.data?.result, methods]);
+
   return (
     <div className="mt-8">
       <FormProvider {...methods}>
@@ -86,16 +117,19 @@ export default function MerchandiseProduct() {
             <FormInput<FormValues>
               name="name"
               placeholder="Write product name here...."
+              // defaultValue={data?.data?.result?.name || ""}
             />
             <FormInput<FormValues>
               name="price"
               placeholder="Write product Price here...."
               type="number"
+              // defaultValue={data?.data?.result?.price}
             />
             <textarea
               {...methods.register("description")}
               id="discription"
               rows={5}
+              // defaultValue={data?.data?.result?.productDescription || ""}
               placeholder="Write product description here...."
               className="w-full px-3 py-3 border-2 border-[#D9D9D9] rounded-sm text-[#999] text-base font-medium outline-none"
             ></textarea>
@@ -125,7 +159,8 @@ export default function MerchandiseProduct() {
                     type="button"
                     onClick={() => handleSizeToggle(size)}
                     className={`px-2 md:px-4 py-2 md:py-3 text-sm md:text-lg font-medium rounded-md border transition-all duration-200 ${
-                      selectedSizes.includes(size)
+                      selectedSizes.includes(size) ||
+                      data?.data?.result?.size?.includes(size)
                         ? "bg-orange-500 text-white border-orange-500 shadow-sm"
                         : "bg-[#edeef4] text-[#999999] border-[#D9D9D9] hover:bg-gray-100 hover:border-gray-300"
                     }`}
@@ -146,7 +181,7 @@ export default function MerchandiseProduct() {
             <div className="w-full space-y-6">
               <UploadMedia name="photos" />
               <Button type="submit" variant="default" className="w-full p-6">
-                {isLoading ? "Loading..." : "Create"}
+                {isLoading || isLoadingEdit ? "Loading..." : "Create"}
               </Button>
             </div>
           </div>
