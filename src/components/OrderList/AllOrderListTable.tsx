@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import Pagination from "../ui/Pagination";
 import { ChevronDownIcon } from "lucide-react";
-import { useUpdateUserStatusMutation } from "@/redux/api/userApi";
-import { useGetAllorderQuery } from "@/redux/api/orderApi";
+import {
+  useGetAllorderQuery,
+  useUpdateOrderStatusMutation,
+} from "@/redux/api/orderApi";
 
 const options = [
   { value: "Pending", key: "PENDING" },
@@ -36,7 +38,7 @@ const AllOrderListTable = ({ status }: { status: string }) => {
     }));
   };
 
-  const [updateUserStatus] = useUpdateUserStatusMutation();
+  const [updateOrderStatus] = useUpdateOrderStatusMutation({});
   const handleSelect = async (id: string, value: string) => {
     console.log(id, value);
     setStatusMap((prev) => ({
@@ -49,7 +51,7 @@ const AllOrderListTable = ({ status }: { status: string }) => {
     }));
 
     try {
-      const response = await updateUserStatus({ id, status: value });
+      const response = await updateOrderStatus({ id, orderStatus: value });
       console.log("User status updated:", response);
     } catch (error) {
       console.error("Error updating user status:", error);
@@ -114,12 +116,20 @@ const AllOrderListTable = ({ status }: { status: string }) => {
                   <td className="py-2 px-4">{info?.user?.location || "N/A"}</td>
 
                   <td className="py-2 px-4">{info?.number}</td>
-                  <td className="py-2 px-4 ">{info?.referPoint}</td>
+                  <td className="py-2 px-4 ">
+                    <h1
+                      // onClick={() => handleUpdate(info?.id)}
+                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer w-16 md:w-32 text-sm md:text-base  bg-[#7b61ff] `}
+                    >
+                      View Details
+                    </h1>
+                  </td>
 
                   <td className="py-2 px-4">
                     <div className="relative inline-block text-left ">
                       {(() => {
-                        const currentStatus = statusMap[info.id] ?? info.status;
+                        const currentStatus =
+                          statusMap[info.id] ?? info.orderStatus;
 
                         return (
                           <>

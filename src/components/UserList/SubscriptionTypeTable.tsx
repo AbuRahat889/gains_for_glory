@@ -75,7 +75,7 @@ const SubscriptionTypeTable = ({ search }: SubscriptionTypeTableProps) => {
                   <td className="py-2 px-4">{index + 1}</td>
                   <td className="py-2 px-4">{info?.name}</td>
                   <td className="py-2 px-4">{info?.email || "N/A"}</td>
-                  <td className="py-2 px-4">{info?.location}</td>
+                  <td className="py-2 px-4">{info?.location || "N/A"}</td>
 
                   <td className="py-2 px-4">{info?.subscription}</td>
                   <td className="py-2 px-4 ">{info?.referPoint}</td>

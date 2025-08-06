@@ -21,7 +21,7 @@ const items: TabsProps["items"] = [
           lineHeight: "normal",
         }}
       >
-        All Use List
+        Order List
       </span>
     ),
     children: <AllOrderListTable status="PENDING" />,
@@ -39,7 +39,7 @@ const items: TabsProps["items"] = [
           lineHeight: "normal",
         }}
       >
-        Basic Plan
+        Complete Order
       </span>
     ),
     children: <AllOrderListTable status="COMPLETED" />,
