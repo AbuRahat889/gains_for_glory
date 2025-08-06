@@ -262,7 +262,7 @@ export const navigation = [
   },
   {
     label: "My Orders",
-    route: "/customer-info",
+    route: "/order-list",
     iconPath: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

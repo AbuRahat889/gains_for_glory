@@ -32,5 +32,6 @@ export const baseApi = createApi({
     "user",
     "dashboard",
     "product",
+    'order'
   ],
 });

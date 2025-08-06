@@ -25,7 +25,7 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex justify-center items-center p-6 border-t">
+    <div className="flex justify-center items-center p-6 border-t ">
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"
