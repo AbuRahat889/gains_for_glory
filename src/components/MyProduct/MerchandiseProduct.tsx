@@ -77,7 +77,6 @@ export default function MerchandiseProduct() {
       }
 
       const response = await createProductFN(formData).unwrap();
-      console.log(response);
       if (response?.success) {
         methods.reset();
         setSelectedSizes([]);

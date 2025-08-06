@@ -7,7 +7,7 @@ export default function page() {
       <div className="bg-white border my-6 px-5 rounded-sm">
         <div className="max-w-6xl p-0 md:p-6 bg-white min-h-screen">
           <h1 className="text-xl font-semibold mb-6 text-gray-900">
-            Upload New Product
+            Edit Product
           </h1>
 
           {/* Selector Buttons */}
@@ -30,7 +30,7 @@ export default function page() {
             </div>
           </div>
 
-          <MerchandiseProduct  />
+          <MerchandiseProduct />
         </div>
       </div>
     </div>

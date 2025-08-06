@@ -98,26 +98,26 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <path
                   d="M19.75 5.5L19.1303 15.5251C18.9719 18.0864 18.8928 19.3671 18.2508 20.2879C17.9333 20.7431 17.5247 21.1273 17.0507 21.416C16.0921 22 14.809 22 12.2427 22C9.67312 22 8.3883 22 7.42905 21.4149C6.9548 21.1257 6.546 20.7408 6.22868 20.2848C5.58688 19.3626 5.50945 18.0801 5.35461 15.5152L4.75 5.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
                 />
                 <path
                   d="M3.25 5.5H21.25M16.3057 5.5L15.6231 4.09173C15.1696 3.15626 14.9428 2.68852 14.5517 2.39681C14.465 2.3321 14.3731 2.27454 14.277 2.2247C13.8439 2 13.3241 2 12.2845 2C11.2188 2 10.686 2 10.2457 2.23412C10.1481 2.28601 10.055 2.3459 9.96729 2.41317C9.57164 2.7167 9.35063 3.20155 8.90861 4.17126L8.30292 5.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
                 />
                 <path
                   d="M9.75 16.5V10.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
                 />
                 <path
                   d="M14.75 16.5V10.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
                 />
               </g>
             </svg>
