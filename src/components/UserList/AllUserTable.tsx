@@ -2,19 +2,28 @@
 import React, { useState } from "react";
 import Pagination from "../ui/Pagination";
 import { ChevronDownIcon } from "lucide-react";
-import { useGetAllUsersQuery } from "@/redux/api/userApi";
+import {
+  useGetAllUsersQuery,
+  useUpdateUserStatusMutation,
+} from "@/redux/api/userApi";
 
-const options = ["Active", "Block"];
+const options = [
+  { value: "Active", key: "ACTIVE" },
+  { value: "Block", key: "PENDING" },
+];
 
 const AllUserTable = () => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useGetAllUsersQuery({});
-  console.log(data);
+  const { data, isLoading } = useGetAllUsersQuery({
+    page: currentPage,
+    limit: 10,
+  });
 
-  const totalPages = data?.data || 1;
-  const currentItems = data?.data || [];
+  const totalPages = data?.data?.meta?.totalPages || 1;
+  const currentItems = data?.data?.data || [];
+  console.log(totalPages);
 
   const [dropdownStates, setDropdownStates] = useState<{
     [key: string]: boolean;
@@ -28,7 +37,9 @@ const AllUserTable = () => {
     }));
   };
 
-  const handleSelect = (id: string, value: string) => {
+  const [updateUserStatus] = useUpdateUserStatusMutation();
+  const handleSelect = async (id: string, value: string) => {
+    console.log(id, value);
     setStatusMap((prev) => ({
       ...prev,
       [id]: value,
@@ -37,6 +48,13 @@ const AllUserTable = () => {
       ...prev,
       [id]: false,
     }));
+
+    try {
+      const response = await updateUserStatus({ id, status: value });
+      console.log("User status updated:", response);
+    } catch (error) {
+      console.error("Error updating user status:", error);
+    }
   };
 
   return (
@@ -101,37 +119,43 @@ const AllUserTable = () => {
 
                   <td className="py-2 px-4">
                     <div className="relative inline-block text-left">
-                      <button
-                        onClick={() => toggleDropdown(info.id)}
-                        className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-sm md:text-base ${
-                          (statusMap[info.id] || info.status) === "ACTIVE"
-                            ? "bg-green-50 text-green-600"
-                            : "bg-red-50 text-red-600"
-                        } font-medium text-sm focus:outline-none`}
-                      >
-                        {statusMap[info.id] || info.status === "ACTIVE"
-                          ? "Active"
-                          : info.status === "PENDING"
-                          ? "Block"
-                          : ""}
-                        <ChevronDownIcon className="w-4 h-4 text-gray-500" />
-                      </button>
+                      {(() => {
+                        const currentStatus = statusMap[info.id] ?? info.status;
 
-                      {dropdownStates[info.id] && (
-                        <div className="absolute mt-2 w-28 rounded-md bg-white shadow-lg z-50">
-                          <div className="py-1">
-                            {options.map((option) => (
-                              <button
-                                key={option}
-                                onClick={() => handleSelect(info.id, option)}
-                                className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
-                              >
-                                {option}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                        return (
+                          <>
+                            <button
+                              onClick={() => toggleDropdown(info.id)}
+                              className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-sm md:text-base font-medium focus:outline-none ${
+                                currentStatus === "ACTIVE"
+                                  ? "bg-green-50 text-green-600"
+                                  : "bg-red-50 text-red-600"
+                              }`}
+                            >
+                              {currentStatus === "ACTIVE" ? "Active" : "Block"}
+                              <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                            </button>
+
+                            {dropdownStates[info.id] && (
+                              <div className="absolute mt-2 w-28 rounded-md bg-white shadow-lg z-50">
+                                <div className="py-1">
+                                  {options.map((option) => (
+                                    <button
+                                      key={option.key}
+                                      onClick={() =>
+                                        handleSelect(info.id, option.key)
+                                      }
+                                      className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                                    >
+                                      {option.value}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   </td>
                 </tr>

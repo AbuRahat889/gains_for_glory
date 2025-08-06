@@ -52,11 +52,10 @@ function Dashboard() {
     setAvailableYears(years);
   }, []);
 
-  const { data: dashboardInfo, isLoading: chartLoading } =
-    useGetAllDashboardInfoQuery({
-      year: selectedYear,
-    });
-  // console.log(dashboardInfo, "dashboardInfo");
+  const { data: dashboardInfo } = useGetAllDashboardInfoQuery({
+    year: selectedYear,
+  });
+  console.log(dashboardInfo, "dashboardInfo");
 
   return (
     <div className=" bg-white border-none md:border my-6 px-5 rounded-sm">
@@ -110,8 +109,8 @@ function Dashboard() {
           </div>
 
           {/* Chart */}
-          <div className="mt-4 min-h-screen">
-            <Chart chatInfo={dashboardInfo?.data} isLoading={chartLoading} />
+          <div className="mt-4 ">
+            <Chart />
           </div>
         </div>
       </div>

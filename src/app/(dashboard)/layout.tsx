@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <main>
       <Navbar />
-      <div className="flex max-h-screen">
+      <div className="flex min-h-screen">
         <ToastContainer />
         <DashboardNavbar />
         <div className="w-full overflow-y-auto">{children}</div>

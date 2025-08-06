@@ -1,163 +1,167 @@
 "use client";
 
-import { HiOutlineArrowNarrowUp } from "react-icons/hi";
 import {
+  Bar,
+  BarChart,
   CartesianGrid,
-  Line,
-  LineChart,
-  Tooltip,
   XAxis,
   YAxis,
+  ResponsiveContainer,
+  Cell,
+  Tooltip,
 } from "recharts";
-import { ChartContainer, ChartTooltipContent } from "../ui/chart";
-import { ResponsiveContainer } from "recharts";
 
-interface ChartProps {
-  chatInfo?: {
-    date: string;
-    count: number;
-    bookings?: {
-      status: string;
-      totalAmount: number;
-    }[];
-  }[];
-  isLoading?: boolean;
+interface MonthlyIncome {
+  month: string;
+  income: number;
 }
 
-const Chart: React.FC<ChartProps> = ({ chatInfo }) => {
-  console.log(chatInfo);
-  const chartData = [
-    { day: 1, value: 2000 },
-    { day: 2, value: 2200 },
-    { day: 3, value: 2800 },
-    { day: 4, value: 3200 },
-    { day: 5, value: 4200 },
-    { day: 6, value: 5800 },
-    { day: 7, value: 6200 },
-    { day: 8, value: 5400 },
-    { day: 9, value: 4800 },
-    { day: 10, value: 4200 },
-    { day: 11, value: 4400 },
-    { day: 12, value: 4600 },
-    { day: 13, value: 500 },
-    { day: 14, value: 5800 },
-    { day: 15, value: 6400 },
-    { day: 16, value: 6800 },
-    { day: 17, value: 7200 },
-    { day: 18, value: 7800 },
-    { day: 19, value: 3000 },
-    { day: 20, value: 8800 },
-    { day: 21, value: 9200 },
-    { day: 22, value: 9600 },
-    { day: 23, value: 9400 },
-    { day: 24, value: 8800 },
-    { day: 25, value: 8600 },
-    { day: 26, value: 8200 },
-    { day: 27, value: 7800 },
-    { day: 28, value: 7600 },
-    { day: 29, value: 8200 },
-    { day: 30, value: 8800 },
-    { day: 31, value: 10000 },
-  ];
+interface IncomeData {
+  total: number;
+  monthly: MonthlyIncome[];
+  totalUser: number;
+}
 
-  const chartConfig = {
-    value: {
-      label: "Value",
-      color: "#7b61ff",
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  data: IncomeData;
+}
+
+interface IncomeChartProps {
+  data?: ApiResponse;
+}
+
+export default function IncomeChart({ data }: IncomeChartProps) {
+  const sampleData: ApiResponse = {
+    success: true,
+    message: "Total income retrieved successfully",
+    data: {
+      total: 1955,
+      monthly: [
+        { month: "Jan", income: 0 },
+        { month: "Feb", income: 0 },
+        { month: "Mar", income: 0 },
+        { month: "Apr", income: 0 },
+        { month: "May", income: 0 },
+        { month: "Jun", income: 0 },
+        { month: "Jul", income: 1955 },
+        { month: "Aug", income: 0 },
+        { month: "Sep", income: 0 },
+        { month: "Oct", income: 0 },
+        { month: "Nov", income: 0 },
+        { month: "Dec", income: 0 },
+      ],
+      totalUser: 22,
     },
   };
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const chartData = data?.data || sampleData.data;
+  const formatCurrency = (value: number) => `$${value.toLocaleString()}`;
+  const formatYAxis = (value: number) => {
+    if (value >= 1000) return `${value / 1000}k`;
+    return value.toString();
+  };
+
+  const maxIncome = Math.max(...chartData.monthly.map((item) => item.income));
+
+  const CustomTooltip = ({
+    active,
+    payload,
+    label,
+  }: {
+    active?: boolean;
+    payload?: any;
+    label?: string;
+  }) => {
     if (active && payload && payload.length) {
+      const value = payload[0].value as number;
+      const isHighlighted = value === maxIncome && value > 0;
       return (
-        <ChartTooltipContent
-          active={active}
-          payload={payload}
-          label={label}
-          labelFormatter={(value) => `Day ${value}`}
-          formatter={(value) => [value.toLocaleString(), "Value"]}
-        />
+        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 ">
+          <div className="flex items-center gap-2 mb-3">
+            <div
+              className={`w-3 h-3 rounded-full ${
+                isHighlighted ? "bg-orange-500" : "bg-purple-500"
+              }`}
+            ></div>
+          </div>
+          <p className="text-sm text-gray-600 mb-2 font-medium">
+            Month: {label}, 2025
+          </p>
+          <p className="text-sm text-gray-600 mb-2">
+            Total sale: {formatCurrency(value > 0 ? value * 51 : 0)}
+          </p>
+          <p className="text-sm text-gray-600">
+            Revenue: {formatCurrency(value)}
+          </p>
+        </div>
       );
     }
     return null;
   };
 
   return (
-    <div className="w-full space-y-6 ">
-      {/* Bookings Count Chart */}
-      <div className=" bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-        <h3 className="text-base font-normal text-textColor mb-4">
-          Total earnings
-        </h3>
-        <div className="flex flex-row md:flex-col lg:flex-row items-center md:items-start lg:items-center gap-3">
-          <p className="text-2xl md:text-4xl font-semibold text-secondaryColor mt-2">
-            $ 12,540
-          </p>
-
-          <div className="bg-[#f8f7ff] w-16 md:w-24 h-8 md:h-10 flex  gap-2 items-center justify-center border-2 border-[#7b61ff] rounded-3xl">
-            <HiOutlineArrowNarrowUp className="text-[#7b61ff] h-16 md:h-24" />
-            <p className="text-[#7b61ff] text-xs md:text-sm font-medium leading-normal">
-              100%
-            </p>
-          </div>
+    <div className="w-full w-full bg-white shadow-sm border border-gray-100">
+      <div className="p-8">
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-2">Total</p>
+          <h2 className="text-5xl font-bold text-gray-900">
+            {formatCurrency(chartData.total)}
+          </h2>
         </div>
 
-        <div className="w-full">
-          <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={chartData}
-                margin={{
-                  left: 0,
-                  right: 20,
-                  top: 20,
-                  bottom: 20,
-                }}
-              >
-                <CartesianGrid strokeDasharray="" stroke="#e0e0e0" />
-                <XAxis
-                  dataKey="day"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  domain={[1, 31]}
-                  type="number"
-                  scale="linear"
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  domain={[2000, 20000]}
-                  tickFormatter={(value) => value.toLocaleString()}
-                  ticks={[
-                    2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000,
-                    20000,
-                  ]}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Line
-                  dataKey="value"
-                  type="monotone"
-                  stroke="var(--color-value)"
-                  strokeWidth={2}
-                  dot={false}
-                  activeDot={{
-                    r: 9,
-                    stroke: "var(--color-value)",
-                    strokeWidth: 2,
-                    fill: "white",
-                  }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+        <div className="h-96">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={chartData.monthly}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 60,
+                bottom: 20,
+              }}
+              barCategoryGap="25%"
+            >
+              <CartesianGrid
+                strokeDasharray="none"
+                stroke="#e2e8f0"
+                horizontal={true}
+                vertical={false}
+              />
+              <XAxis
+                dataKey="month"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 13, fill: "#64748b", fontWeight: 500 }}
+                dy={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 13, fill: "#64748b", fontWeight: 500 }}
+                tickFormatter={formatYAxis}
+                domain={[0, Math.max(2500, maxIncome * 1.2)]}
+                dx={-10}
+                ticks={[0, 500, 1000, 1500, 2000, 2500]}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="income" radius={[6, 6, 0, 0]}>
+                {chartData.monthly.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      entry.income === maxIncome && entry.income > 0
+                        ? "#f97316"
+                        : "#8b5cf6"
+                    }
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
-
-      {/* Booking Status Distribution */}
     </div>
   );
-};
-
-export default Chart;
+}

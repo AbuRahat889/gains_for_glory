@@ -11,11 +11,15 @@ const SubscriptionTypeTable = ({ search }: SubscriptionTypeTableProps) => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useGetAllUsersByParamsQuery(search);
+  const { data, isLoading } = useGetAllUsersByParamsQuery({
+    search,
+    page: currentPage,
+    limit: 10,
+  });
   console.log(data);
 
-  const totalPages = data?.data || 1;
-  const currentItems = data?.data || [];
+  const totalPages = data?.data?.meta?.totalPages || 1;
+  const currentItems = data?.data?.data || [];
 
   return (
     <div className=" bg-white">
