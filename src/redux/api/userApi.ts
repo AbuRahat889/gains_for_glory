@@ -31,6 +31,31 @@ const UsersApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+    //USer Request
+    //update user status
+    getUserRequest: build.query({
+      query: ({ page, limit, type }) => ({
+        url: `/community/request?type=${type}&page=${page}&limit=${limit}`,
+        method: "GET",
+      }),
+      providesTags: ["user"],
+    }),
+    //accept user request
+    acceptUserRequest: build.mutation({
+      query: ({ id, type }) => ({
+        url: `/community/accept-request?id=${id}&communityName=${type}`,
+        method: "put",
+      }),
+      invalidatesTags: ["user"],
+    }),
+    //delete user request
+    blockUserRequest: build.mutation({
+      query: ({ id, type }) => ({
+        url: `/community/block-request?id=${id}&communityName=${type}`,
+        method: "put",
+      }),
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
@@ -38,5 +63,10 @@ export const {
   useGetAllUsersQuery,
   useGetAllUsersByParamsQuery,
   useUpdateUserStatusMutation,
+
+  // User Request
+  useGetUserRequestQuery,
+  useAcceptUserRequestMutation,
+  useBlockUserRequestMutation,
 } = UsersApi;
 export default UsersApi;

@@ -1,29 +1,34 @@
 "use client";
-import {
-  useDeleteBookingMutation,
-  useGetAllBookingQuery,
-  useUpdateBookingStatusMutation,
-} from "@/redux/api/booking";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import Pagination from "../ui/Pagination";
 import deleteImage from "@/assets/icon/delete.svg";
 import Image from "next/image";
-import Pagination from "../ui/Pagination";
+import {
+  useAcceptUserRequestMutation,
+  useBlockUserRequestMutation,
+  useGetUserRequestQuery,
+} from "@/redux/api/userApi";
 
-const FinanceCommunityTable = () => {
+interface UserRequestTableProps {
+  type: string;
+}
+
+const UserRequestTable = ({ type }: UserRequestTableProps) => {
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useGetAllBookingQuery({
+  const { data, isLoading } = useGetUserRequestQuery({
+    type: type,
     page: currentPage,
     limit: 10,
   });
 
-  const totalPages = data?.data?.meta?.totalPage || 1;
+  const totalPages = data?.data?.meta?.totalPages || 1;
   const currentItems = data?.data?.data || [];
 
   //handle delete
-  const [deleteFN] = useDeleteBookingMutation();
+  const [deleteFN] = useBlockUserRequestMutation();
   const handleDelete = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -35,7 +40,7 @@ const FinanceCommunityTable = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await deleteFN(id);
+        const res = await deleteFN({ id, type });
         if (res?.data?.success) {
           Swal.fire({
             title: "Deleted!",
@@ -47,7 +52,8 @@ const FinanceCommunityTable = () => {
     });
   };
 
-  const [updateFN] = useUpdateBookingStatusMutation();
+  // UPDATE STATUS
+  const [updateFN] = useAcceptUserRequestMutation();
   const handleUpdate = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -59,8 +65,9 @@ const FinanceCommunityTable = () => {
       confirmButtonText: "Yes, update it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await updateFN({ id, status: "COMPLETED" });
-        if (res?.data?.data?.success) {
+        const res = await updateFN({ id, type });
+
+        if (res?.data?.success) {
           Swal.fire({
             title: "Updated!",
             text: "Your file status has been update.",
@@ -124,28 +131,20 @@ const FinanceCommunityTable = () => {
                   className="border-t border-[#D1D5DB] text-sm md:text-base text-textColor font-medium"
                 >
                   <td className="py-2 px-4">{index + 1}</td>
-                  <td className="py-2 px-4">{info?.service}</td>
+                  <td className="py-2 px-4">{info?.name || "N/A"}</td>
                   <td className="py-2 px-4">
-                    {info?.user?.firstName} {info?.user?.lastName}
+                    {info?.user?.firstName} {info?.email || "N/A"}
                   </td>
-                  <td className="py-2 px-4">{info?.user?.phoneNumber}</td>
+                  <td className="py-2 px-4">{info?.location || "N/A"}</td>
 
-                  <td className="py-2 px-4 text-center">{info?.totalAmount}</td>
+                  <td className="py-2 px-4">{info?.subscription || "N/A"}</td>
 
                   <td className="py-2 px-4">
                     <h1
                       onClick={() => handleUpdate(info?.id)}
-                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer text-sm md:text-base w-20 md:w-32  ${
-                        info?.status === "COMPLETED"
-                          ? "bg-[#7b61ff]"
-                          : info?.status === "PENDING"
-                          ? "bg-yellow-500"
-                          : info?.status === "CANCELLED"
-                          ? "bg-red-500"
-                          : "bg-gray-300"
-                      }`}
+                      className={`py-1 rounded font-semibold text-white text-center cursor-pointer w-16 md:w-32 text-sm md:text-base  bg-[#7b61ff] `}
                     >
-                      {info?.status}
+                      Approve
                     </h1>
                   </td>
                   <td className="py-2 px-4 flex justify-center">
@@ -173,4 +172,4 @@ const FinanceCommunityTable = () => {
   );
 };
 
-export default FinanceCommunityTable;
+export default UserRequestTable;
