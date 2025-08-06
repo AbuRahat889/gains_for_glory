@@ -31,5 +31,6 @@ export const baseApi = createApi({
     // new
     "user",
     "dashboard",
+    "product",
   ],
 });

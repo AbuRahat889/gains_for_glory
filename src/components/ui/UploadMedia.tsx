@@ -45,7 +45,7 @@ export default function UploadMedia({ name, onUpload }: UploadMediaProps) {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       handleFiles(files);
-      e.target.value = ""; // <-- Reset input value here to allow same file re-upload
+      e.target.value = "";
     }
   };
 
@@ -71,17 +71,18 @@ export default function UploadMedia({ name, onUpload }: UploadMediaProps) {
     if (onUpload) {
       const uploadedUrls = await onUpload(formData);
       if (uploadedUrls) {
+        // If the server returns URLs, you can still store them
         setValue(name, uploadedUrls);
       } else {
         setValue(
           name,
-          newUploads.map((f) => f.preview) // fallback to preview URLs
+          [...uploadedFiles, ...newUploads].map((f) => f.file)
         );
       }
     } else {
       setValue(
         name,
-        newUploads.map((f) => f.preview)
+        [...uploadedFiles, ...newUploads].map((f) => f.file)
       );
     }
   };
@@ -90,13 +91,11 @@ export default function UploadMedia({ name, onUpload }: UploadMediaProps) {
     setUploadedFiles((prev) => {
       const updated = prev.filter((f) => f.id !== id);
 
-      // Clean up preview URL
       const removedFile = prev.find((f) => f.id === id);
       if (removedFile) URL.revokeObjectURL(removedFile.preview);
 
-      // Update React Hook Form field with new URLs
-      const newUrls = updated.map((f) => f.preview);
-      setValue(name, newUrls); // <-- THIS IS THE FIX
+      const newFiles = updated.map((f) => f.file);
+      setValue(name, newFiles);
 
       return updated;
     });
@@ -148,49 +147,47 @@ export default function UploadMedia({ name, onUpload }: UploadMediaProps) {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {uploadedFiles.map((f) => (
-              <Card key={f.id} className="relative group">
-                <div className="">
-                  <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 ">
-                    {f.type === "image" ? (
-                      <Image
+              <div key={f.id} className="relative group">
+                <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                  {f.type === "image" ? (
+                    <Image
+                      src={f.preview}
+                      alt="preview"
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="relative w-full h-full">
+                      <video
                         src={f.preview}
-                        alt="preview"
-                        fill
-                        className="object-cover "
+                        className="w-full h-full object-cover"
+                        muted
                       />
-                    ) : (
-                      <div className="relative w-full h-full">
-                        <video
-                          src={f.preview}
-                          className="w-full h-full object-cover"
-                          muted
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
-                          <Play className="h-8 w-8 text-white" />
-                        </div>
+                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+                        <Play className="h-8 w-8 text-white" />
                       </div>
-                    )}
-
-                    <button
-                      onClick={() => removeFile(f.id)}
-                      className="absolute top-1 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-
-                    <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
-                      {f.type === "image" ? (
-                        <ImageIcon className="h-3 w-3 inline mr-1" />
-                      ) : (
-                        <Play className="h-3 w-3 inline mr-1" />
-                      )}
-                      {f.file.name.length > 15
-                        ? f.file.name.slice(0, 15) + "..."
-                        : f.file.name}
                     </div>
+                  )}
+
+                  <button
+                    onClick={() => removeFile(f.id)}
+                    className="absolute top-1 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+
+                  <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                    {f.type === "image" ? (
+                      <ImageIcon className="h-3 w-3 inline mr-1" />
+                    ) : (
+                      <Play className="h-3 w-3 inline mr-1" />
+                    )}
+                    {f.file.name.length > 15
+                      ? f.file.name.slice(0, 15) + "..."
+                      : f.file.name}
                   </div>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </div>
@@ -212,7 +209,7 @@ export default function UploadMedia({ name, onUpload }: UploadMediaProps) {
 
 // <FormProvider {...methods}>
 //   <form onSubmit={methods.handleSubmit(onSubmit)} className="p-6">
-//     <UploadMedia name="photos" onUpload={handleUpload} />
+//   //  <UploadMedia name="photos" />
 //     <button
 //       type="submit"
 //       className="mt-6 bg-blue-600 text-white px-4 py-2 rounded"

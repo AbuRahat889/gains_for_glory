@@ -4,6 +4,8 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { FormInput } from "../ui/Input";
 import UploadMedia from "../ui/UploadMedia";
 import { Button } from "../ui/button";
+import { useCreateProductMutation } from "@/redux/api/productApi";
+import { toast } from "react-toastify";
 
 export type FormValues = {
   name: string;
@@ -17,16 +19,34 @@ export type FormValues = {
 
 export default function SupplementsProduct() {
   const methods = useForm<FormValues>();
+  const [createProductFN, { isLoading }] = useCreateProductMutation();
+  const formData = new FormData();
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const bodyData = {
+      name: data?.name,
+      category: "merchandise",
+      price: data?.price,
+      keyFeature: data?.features,
+      productDetails: data?.details,
+      productDescription: data?.description,
+    };
 
-  const handleUpload = async (formData: FormData): Promise<string[] | void> => {
-    console.log(formData);
-    // const res = await uploadFile(formData).unwrap();
-
-    // return res?.success ? res?.data?.images : [];
-  };
-
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Submitted data:", data);
+    data?.photos.forEach((photo) => {
+      formData.append("productImage", photo);
+    });
+    formData.append("bodyData", JSON.stringify(bodyData));
+    try {
+      const response = await createProductFN(formData).unwrap();
+      console.log(response);
+      if (response?.success) {
+        methods.reset();
+        toast.success(response?.message || "Product created successfully!");
+        window.location.reload();
+        // Optionally, you can show a success message or redirect
+      }
+    } catch (error) {
+      console.error("Error uploading product:", error);
+    }
   };
 
   return (
@@ -90,9 +110,9 @@ export default function SupplementsProduct() {
 
           <div className="flex w-full justify-end items-end">
             <div className="w-full space-y-6">
-              <UploadMedia name="photos" onUpload={handleUpload} />
+              <UploadMedia name="photos" />
               <Button type="submit" variant="default" className="w-full p-6">
-                Create
+                {isLoading ? "Loading..." : "Create"}
               </Button>
             </div>
           </div>
