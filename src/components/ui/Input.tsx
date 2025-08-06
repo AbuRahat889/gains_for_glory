@@ -23,6 +23,11 @@ export function FormInput<T extends FieldValues>({
 
   return (
     <div className="mb-4">
+      {rest.label && (
+        <label htmlFor={name} className="block text-base font-medium text-[#000] mb-2">
+          {rest.label}
+        </label>
+      )}
       <input
         id={name}
         {...register(name, {

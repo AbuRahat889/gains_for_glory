@@ -316,7 +316,7 @@ export const navigation = [
   },
   {
     label: "Add Daily Bible",
-    route: "/videos",
+    route: "/add-daily-bible",
     iconPath: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
