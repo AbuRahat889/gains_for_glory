@@ -6,6 +6,7 @@ import {
   useGetAllorderQuery,
   useUpdateOrderStatusMutation,
 } from "@/redux/api/orderApi";
+import DetailsModal from "./DetailsModal";
 
 const options = [
   { value: "Pending", key: "PENDING" },
@@ -13,8 +14,11 @@ const options = [
 ];
 
 const AllOrderListTable = ({ status }: { status: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   // const itemsPerPage = 15; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
+  const [id, setId] = useState<string | null>(null);
 
   const { data, isLoading } = useGetAllorderQuery({
     status: status,
@@ -24,7 +28,6 @@ const AllOrderListTable = ({ status }: { status: string }) => {
 
   const totalPages = data?.data?.meta?.totalPages || 1;
   const currentItems = data?.data?.data || [];
-  console.log(totalPages);
 
   const [dropdownStates, setDropdownStates] = useState<{
     [key: string]: boolean;
@@ -56,6 +59,12 @@ const AllOrderListTable = ({ status }: { status: string }) => {
     } catch (error) {
       console.error("Error updating user status:", error);
     }
+  };
+
+  const handleModal = (id: string) => {
+    setIsOpen(true);
+    setId(id);
+    console.log(id);
   };
 
   return (
@@ -114,11 +123,10 @@ const AllOrderListTable = ({ status }: { status: string }) => {
                   <td className="py-2 px-4">{info?.user?.name}</td>
                   <td className="py-2 px-4">{info?.user?.email || "N/A"}</td>
                   <td className="py-2 px-4">{info?.user?.location || "N/A"}</td>
-
                   <td className="py-2 px-4">{info?.number}</td>
                   <td className="py-2 px-4 ">
                     <h1
-                      // onClick={() => handleUpdate(info?.id)}
+                      onClick={() => handleModal(info?.id)}
                       className={`py-1 rounded font-semibold text-white text-center cursor-pointer w-16 md:w-32 text-sm md:text-base  bg-[#7b61ff] `}
                     >
                       View Details
@@ -169,6 +177,11 @@ const AllOrderListTable = ({ status }: { status: string }) => {
                       })()}
                     </div>
                   </td>
+                  <DetailsModal
+                    isOpen={isOpen}
+                    onClose={() => setIsOpen(false)}
+                    orderInfo={currentItems.find((item: any) => item.id === id)}
+                  />
                 </tr>
               ))
             )}

@@ -8,7 +8,6 @@ import { useGetMeQuery } from "@/redux/api/auth";
 
 export default function Navbar() {
   const { data } = useGetMeQuery("");
-  console.log(data);
   return (
     <nav
       className={` mx-auto border-b border-[#b9b9b9] h-24 flex px-5 md:px-28 fixed bg-white z-[9] w-full`}
