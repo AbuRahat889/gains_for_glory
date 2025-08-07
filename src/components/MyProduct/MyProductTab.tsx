@@ -3,7 +3,6 @@ import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import AllProduct from "./AllProduct";
-import CreatedProduct from "./CreatedProduct";
 
 const onChange = (key: string) => {
   console.log(key);
@@ -42,7 +41,8 @@ const items: TabsProps["items"] = [
         Upload New Product
       </span>
     ),
-    children: <CreatedProduct />,
+    // children: <CreatedProduct />,
+    children: "this is the upload new product tab",
   },
 ];
 

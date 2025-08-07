@@ -262,7 +262,8 @@ export const navigation = [
   },
   {
     label: "My Orders",
-    route: "/order-list",
+    // route: "/order-list",
+    route: "/",
     iconPath: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -316,7 +317,8 @@ export const navigation = [
   },
   {
     label: "Add Daily Bible",
-    route: "/add-daily-bible",
+    route: "/",
+    // route: "/add-daily-bible",
     iconPath: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

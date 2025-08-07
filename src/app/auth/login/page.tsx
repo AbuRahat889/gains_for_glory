@@ -120,8 +120,6 @@ const ForgotPassword = () => {
                   message: "Invalid email format",
                 },
               })}
-              value={'admin@gmail.com'}
-              readOnly
               className="w-full border-2 border-[#747474] rounded-md p-3 outline-none text-[#747474]"
             />
             {errors.email && (
@@ -141,7 +139,6 @@ const ForgotPassword = () => {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="Enter your password"
-                defaultValue={'123456'}
                 minLength={5}
                 {...register("password", {
                   required: "Password is required",
